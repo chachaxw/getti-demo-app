@@ -1,13 +1,10 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
  * @format
  * @flow
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, Image, ImageBackground, View, Text } from 'react-native';
+import { StyleSheet, Button, Image, ImageBackground, View, Text } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -46,7 +43,9 @@ const styles = StyleSheet.create({
   },
 });
 
-type Props = {}
+type Props = {
+  navigation: any,
+}
 export default class Home extends Component<Props> {
 
   static navigationOptions = {
@@ -58,13 +57,17 @@ export default class Home extends Component<Props> {
   };
 
   render() {
+    const { navigation } = this.props;
+
     return (
       <View style={styles.container}>
         <Image style={styles.camera} source={require('../assets/images/Camera.png')}></Image>
-        <ImageBackground style={styles.button} source={require('../assets/images/Button.png')}>
-          <Text style={styles.buttonText}>我的学习</Text>
-          <Image style={styles.rightArrow} source={require('../assets/images/RightArrow.png')}></Image>
-        </ImageBackground>
+        <Button onPress={() => navigation.navigate('Result')}>
+          <ImageBackground style={styles.button} source={require('../assets/images/Button.png')}>
+            <Text style={styles.buttonText}>我的学习</Text>
+            <Image style={styles.rightArrow} source={require('../assets/images/RightArrow.png')}></Image>
+          </ImageBackground>
+        </Button>
       </View> 
     );
   }
