@@ -10,11 +10,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 16,
-    paddingLeft: 12,
-    paddingRight: 12,
     alignItems: "center",
     backgroundColor: '#F9F9F9',
   },
+  wrapper: {
+    width: '100%',
+    paddingLeft: 12,
+    paddingRight: 12,
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 19,
+    color: '#05384D',
+    paddingTop: 12,
+    paddingBottom: 12,
+  }
 });
 
 type Props = {}
@@ -30,7 +40,9 @@ export default class Result extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Learn Screen</Text>
+        <View style={styles.wrapper}>
+          <Text style={styles.title}>instead 和 instead of 有什么区别？</Text>
+        </View>
       </View>
     )
   }
