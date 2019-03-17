@@ -11,10 +11,12 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import Home from './components/Home';
 import Result from './components/Result';
+import Learn from './components/Learn';
 
 const MainNavigator = createStackNavigator({
   Home: { screen: Home },
   Result: { screen: Result },
+  Learn: { screen: Learn },
 });
 
 const AppContainer =  createAppContainer(MainNavigator);

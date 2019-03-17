@@ -72,7 +72,8 @@ export default class Home extends Component<Props> {
     if (this.camera) {
       const options = { quality: 0.7, base64: true };
       const data = await this.camera.takePictureAsync(options);
-      console.log(data.uri);
+      console.log(data.uri, this.camera);
+      this.props.navigation.navigate('Result');
     }
   }
 
@@ -87,13 +88,13 @@ export default class Home extends Component<Props> {
           type={RNCamera.Constants.Type.back}
           permissionDialogTitle={'Permission to use camera'}
           permissionDialogMessage={'We need your permission to use your camera phone'}>
-          <TouchableOpacity style={styles.cameraTouchable} onPress={() => this.takePicture()} activeOpacity={0.8}>
+          <TouchableOpacity style={styles.cameraTouchable} onPress={() => this.takePicture()} activeOpacity={1}>
             <Image style={styles.camera} source={require('../assets/images/Camera.png')}></Image>
           </TouchableOpacity>
         </RNCamera>
         <View style={styles.button} shadowColor="#a6a6a6" shadowOpacity={0.5}
           shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-          <TouchableOpacity onPress={() => navigation.navigate('Result')} activeOpacity={1}>
+          <TouchableOpacity onPress={() => navigation.navigate('Learn')} activeOpacity={1}>
             <ImageBackground style={styles.buttonBG} source={require('../assets/images/Button.png')}>
               <Text style={styles.buttonText}>我的学习</Text>
               <Image style={styles.rightArrow} source={require('../assets/images/RightArrow.png')}></Image>

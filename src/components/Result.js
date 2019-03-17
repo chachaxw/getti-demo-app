@@ -50,8 +50,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#303032',
     fontWeight: 'bold',
+    textAlign: 'justify',
   },
   button: {
+    display: 'flex',
     borderRadius: 14,
     paddingLeft: 14,
     paddingRight: 14,
