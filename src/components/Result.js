@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingLeft: 12,
     paddingRight: 12,
-    alignItems: "center",
     backgroundColor: '#F9F9F9',
   },
   wordsContainer: {
@@ -145,7 +144,7 @@ export default class Result extends Component<Props> {
     }];
 
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
           shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
           <View style={styles.head}>
@@ -190,7 +189,7 @@ export default class Result extends Component<Props> {
             </TouchableOpacity>
           </View>
         </View>
-      </View> 
+      </ScrollView> 
     );
   }
 }

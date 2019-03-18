@@ -70,9 +70,9 @@ export default class Home extends Component<Props> {
   //拍摄照片
   async takePicture() {
     if (this.camera) {
-      const options = { quality: 0.7, base64: true };
-      const data = await this.camera.takePictureAsync(options);
-      console.log(data.uri, this.camera);
+      // const options = { quality: 0.7, base64: true };
+      // const data = await this.camera.takePictureAsync(options);
+      // console.log(data.uri, this.camera);
       this.props.navigation.navigate('Result');
     }
   }
