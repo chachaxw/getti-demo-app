@@ -5,12 +5,24 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, Image, View, Text } from 'react-native';
-import Video, { Container } from 'react-native-af-video-player'
+import Video, { Container } from 'react-native-af-video-player';
+import ImagePicker from 'react-native-image-picker';
+
+import learnMock from '../mock/learn';
 
 type Props = {
   navigation: any,
 }
-export default class Result extends Component<Props> {
+
+type States = {
+  knowledge: any,
+}
+export default class Result extends Component<Props, States> {
+
+  state = {
+    knowledge: {},
+  }
+
   static navigationOptions = ({ navigation }: any) => {
     const { state } = navigation;
     // Setup the header and tabBarVisible status
@@ -38,48 +50,51 @@ export default class Result extends Component<Props> {
   }
 
   render() {
+    const { navigation } = this.props;
+    const id = navigation.state.params && navigation.state.params.id ? navigation.state.params.id : 0;
+    const knowledge = learnMock[id];
+    console.log(knowledge);
+
     return (
       <ScrollView style={styles.container}>
         <View style={styles.wrapper}>
-          <Text style={styles.title}>instead 和 instead of 有什么区别？</Text>
+          <Text style={styles.title}>{knowledge && knowledge.title}</Text>
           <Container>
             <Video url={require('../assets/video/video.mp4')}
               onFullScreen={status => this.onFullScreen(status)}/>
           </Container>
-          <View style={styles.wordInfo}>
-            <Text style={styles.word}>“instead”</Text>
-            <Text style={styles.explain}>instead 是一个副词。当我们说一个人做了一件事情而不是另一件事情的时候，我们就用 instead</Text>
-            <Text style={styles.example}>
-              Hema did not answer. Instead she looked out of the taxi window. 赫玛没有回答。相反，她望向了出租车窗外。
-            </Text>
-            <Text style={styles.example}>
-              I felt like crying, but I managed to smile instead. 我想哭，但我还是尽量笑了。
-            </Text>
-          </View>
-          <View style={styles.wordInfo}>
-            <Text style={styles.word}>“instead of”</Text>
-            <Text style={styles.explain}>
-              instead of 是一个介词，强调对其宾语的否定。通常用于引出一件不被做，或不被使用，或并非真实的事情
-            </Text>
-            <Text style={styles.example}>
-              Why not use your bike to get to work instead of your car? 比起开车，为什么不骑你的自行车去上班呢？
-            </Text>
-            <Text style={styles.example}>
-              You can have rice instead of potatoes. 你可以吃米饭而不是土豆
-            </Text>
-            <Text style={styles.example}>
-              我们可以说某人 does something instead of doing something else
-            </Text>
-            <Text style={styles.example}>
-              You could always go camping instead of staying in a hotel. 你可以去野营而不是住旅馆。
-            </Text>
-            <Text style={styles.example}>
-              Why don’t you help, instead of standing there and watching. 你为什么站在那里看着，而不帮忙呢？
-            </Text>
-          </View>
+          {knowledge && knowledge.words && knowledge.words.length ? 
+            knowledge.words.map(item => {
+              return (
+                <View style={styles.wordInfo} key={item.id}>
+                  <Text style={styles.word}>{item.word}</Text>
+                  <Text style={styles.explain}>{item.explain}</Text>
+                  {item.example && item.example.length > 0 ?
+                    item.example.map(d => (
+                      <Text style={styles.example} key={d.id}>{d.content}</Text>
+                    )) : null
+                  }
+                </View>
+              );
+            }) : null
+          }
           <View style={styles.tipsWrapper}>
             <Text style={styles.tipsTitle}>注意!</Text>
-            <Text style={styles.tipsContent}>不要说某人 does something instead to do something else</Text>
+            {knowledge.tips && knowledge.tips.length > 0 ? 
+              knowledge.tips.map(item => (
+                <Text style={styles.tipsContent} key={item.id}>{item.content}</Text>
+              )) : null
+            }
+          </View>
+          <View style={styles.relative}>
+            <Text style={styles.title}>相关条目: </Text>
+            {knowledge.relative && knowledge.relative.length > 0 ? 
+              knowledge.relative.map(item => (
+                <View style={styles.label}>
+                  <Text key={item.id} style={styles.labelText}>{item.content}</Text>
+                </View>
+              )) : null
+            }
           </View>
         </View>
       </ScrollView>
@@ -93,8 +108,27 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     backgroundColor: '#F5F5F5',
   },
+  relative: {
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#8CD1EE',
+  },
+  label: {
+    paddingTop: 5,
+    marginRight: 10,
+    marginBottom: 10,
+    paddingRight: 15,
+    paddingBottom: 5,
+    paddingLeft: 15,
+    borderRadius: 14,
+    borderColor: '#eee',
+    borderWidth: 1,
+  },
+  labelText: {
+    fontSize: 14,
+  },
   wrapper: {
-    width: '100%',
+    flex: 1,
     paddingLeft: 12,
     paddingRight: 12,
     paddingBottom: 50,
@@ -110,7 +144,7 @@ const styles = StyleSheet.create({
   wordInfo: {
     paddingBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#8CD1EE',
   },
   word: {
     color: '#05384D',

@@ -65,22 +65,25 @@ export default class Camera extends Component<Props, States> {
     };
     form.append('content', file);
 
-    console.log('form', form);
-    axios.post(apiUrl.knowledge, form, configs).then(res => {
-      console.log('response', res);
-      if(res) {
-        const navigateAction = NavigationActions.navigate({
-          routeName: 'Result',
-          params: {},
-        });
-        this.props.navigation.dispatch(navigateAction);
-      }
-      this.setState({ loading: false });
-    }).catch((err: Error) => {
-      console.log('Error', err);
-      this.setState({ loading: false });
-      alert('扫描失败');
-    })
+    try {
+      const [res1, res2] = await new Promise.all([
+        axios.post(apiUrl.knowledge, form, configs),
+        axios.post(apiUrl.ocr, form, configs),
+      ]);
+
+      console.log(res1, res2);
+  
+      const navigateAction = NavigationActions.navigate({
+        routeName: 'Result',
+        params: {
+          id: 0,
+        },
+      });
+  
+      this.props.navigation.dispatch(navigateAction);
+    } catch (error) {
+      alert('上传图片失败');
+    }
   }
 
   async handleOk() {

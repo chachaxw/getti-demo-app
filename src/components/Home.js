@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Image, ImageBackground, View, Text, TouchableOpacity } from 'react-native';
-
+import { NavigationActions } from 'react-navigation';
 
 type Props = {
   navigation: any,
@@ -25,8 +25,18 @@ export default class Home extends Component<Props, States> {
     this.props.navigation.navigate('Camera');
   }
 
+  goToLearn() {
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Learn',
+      params: {
+        id: 100,
+      },
+    });
+
+    this.props.navigation.dispatch(navigateAction);
+  }
+
   render() {
-    const { navigation } = this.props;
 
     return (
       <View style={styles.container}>
@@ -35,7 +45,7 @@ export default class Home extends Component<Props, States> {
         </TouchableOpacity>
         <View style={styles.button} shadowColor="#a6a6a6" shadowOpacity={0.5}
           shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-          <TouchableOpacity onPress={() => navigation.navigate('Learn')} activeOpacity={1}>
+          <TouchableOpacity onPress={() => this.goToLearn()} activeOpacity={1}>
             <ImageBackground style={styles.buttonBG} source={require('../assets/images/Button.png')}>
               <Text style={styles.buttonText}>我的学习</Text>
               <Image style={styles.rightArrow} source={require('../assets/images/RightArrow.png')}></Image>
