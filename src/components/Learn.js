@@ -7,53 +7,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
 import Video, { ScrollView, Container } from 'react-native-af-video-player'
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 12,
-    backgroundColor: '#F5F5F5',
-  },
-  wrapper: {
-    width: '100%',
-    paddingLeft: 12,
-    paddingRight: 12,
-    paddingBottom: 50,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 19,
-    color: '#05384D',
-    fontWeight: 'bold',
-    paddingTop: 12,
-    paddingBottom: 12,
-  },
-  wordInfo: {
-    paddingBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  word: {
-    color: '#05384D',
-    fontWeight: 'bold',
-    fontSize: 17,
-    paddingTop: 16,
-    paddingBottom: 5,
-  },
-  explain: {
-    color: '#075C7E',
-    fontWeight: 'bold',
-    fontSize: 15,
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  example: {
-    color: '#0168A4',
-    fontSize: 14,
-    paddingTop: 10,
-    paddingBottom: 10,
-  }
-});
-
 type Props = {
   navigation: any,
 }
@@ -124,8 +77,74 @@ export default class Result extends Component<Props> {
               Why don’t you help, instead of standing there and watching. 你为什么站在那里看着，而不帮忙呢？
             </Text>
           </View>
+          <View style={styles.tipsWrapper}>
+            <Text style={styles.tipsTitle}>注意!</Text>
+            <Text style={styles.tipsContent}>不要说某人 does something instead to do something else</Text>
+          </View>
         </View>
       </ScrollView>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 12,
+    backgroundColor: '#F5F5F5',
+  },
+  wrapper: {
+    width: '100%',
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingBottom: 50,
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 19,
+    color: '#05384D',
+    fontWeight: 'bold',
+    paddingTop: 12,
+    paddingBottom: 12,
+  },
+  wordInfo: {
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  word: {
+    color: '#05384D',
+    fontWeight: 'bold',
+    fontSize: 17,
+    paddingTop: 16,
+    paddingBottom: 5,
+  },
+  explain: {
+    color: '#075C7E',
+    fontWeight: 'bold',
+    fontSize: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  example: {
+    color: '#0168A4',
+    fontSize: 14,
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  tipsWrapper: {
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 20,
+    backgroundColor: '#76ABD3',
+  },
+  tipsTitle: {
+    fontSize: 17,
+    color: '#fff',
+    marginBottom: 12,
+  },
+  tipsContent: {
+    fontSize: 14,
+    color: '#fff',
+  }
+});

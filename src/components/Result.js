@@ -6,6 +6,94 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 
+type Props = {}
+export default class Result extends Component<Props> {
+
+  static navigationOptions = {
+    title: '扫描结果',
+    headerStyle: {
+      borderBottomWidth: 0,
+      backgroundColor: '#ffffff',
+    },
+  };
+
+  joinStudy() {
+    alert('Join Study');
+  }
+
+  startToLearn() {
+    alert('Start to learn');
+  }
+
+  render() {
+    const wordsList = [{
+      id: 0,
+      word: 'strand   v.搁浅',
+    }, {
+      id: 1,
+      word: 'dissent   v.持异议的',
+    }, {
+      id: 2,
+      word: 'acrimony   v.持异议的',
+    }, {
+      id: 3,
+      word: 'fjord   v.峡湾',
+    }, {
+      id: 4,
+      word: 'hictic  a.忙乱的',
+    }];
+
+    return (
+      <ScrollView style={styles.container}>
+        <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
+          shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
+          <View style={styles.head}>
+            <Text style={styles.headText}>有5个单词你可能不认识</Text>
+            <TouchableOpacity style={styles.button} onPress={() => this.joinStudy()} activeOpacity={0.8}>
+              <Text style={styles.buttonText}>加入学习</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.wordsList}>
+            {wordsList && wordsList.length > 0 ? wordsList.map(item => (
+              <View style={styles.wordLabel} key={item.id}>
+                <Text>{item.word}</Text>
+              </View>
+            )) : null}
+          </View>
+        </View>
+        <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
+          shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
+          <Text style={styles.headText}>
+            If every distraction took 1 minute, that should add up to 2.5 hours of unfruitful time.
+          </Text>
+        </View>
+        <View style={styles.tipsWrapper}>
+          <Image style={styles.avatar} source={require('../assets/images/Camera.png')} />
+          <View style={styles.learnContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
+            shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
+            <Text>条件状语从句下的虚拟语气</Text>
+            <TouchableOpacity style={styles.learnButton} onPress={() => this.startToLearn()} activeOpacity={0.8}>
+              <Text style={styles.buttonText}>学习该知识点</Text>
+              <Image style={styles.rightArrow} source={require('../assets/images/Arrow.png')}></Image>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.tipsWrapper}>
+          <Image style={styles.avatar} source={require('../assets/images/Camera.png')} />
+          <View style={styles.learnContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
+            shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
+            <Text>条件状语从句下的虚拟语气</Text>
+            <TouchableOpacity style={styles.learnButton} onPress={() => this.startToLearn()} activeOpacity={0.8}>
+              <Text style={styles.buttonText}>学习该知识点</Text>
+              <Image style={styles.rightArrow} source={require('../assets/images/Arrow.png')}></Image>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView> 
+    );
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -105,91 +193,3 @@ const styles = StyleSheet.create({
     height: 14,
   },
 });
-
-type Props = {}
-export default class Result extends Component<Props> {
-
-  static navigationOptions = {
-    title: '扫描结果',
-    headerStyle: {
-      borderBottomWidth: 0,
-      backgroundColor: '#ffffff',
-    },
-  };
-
-  joinStudy() {
-    alert('Join Study');
-  }
-
-  startToLearn() {
-    alert('Start to learn');
-  }
-
-  render() {
-    const wordsList = [{
-      id: 0,
-      word: 'strand   v.搁浅',
-    }, {
-      id: 1,
-      word: 'dissent   v.持异议的',
-    }, {
-      id: 2,
-      word: 'acrimony   v.持异议的',
-    }, {
-      id: 3,
-      word: 'fjord   v.峡湾',
-    }, {
-      id: 4,
-      word: 'hictic  a.忙乱的',
-    }];
-
-    return (
-      <ScrollView style={styles.container}>
-        <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
-          shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-          <View style={styles.head}>
-            <Text style={styles.headText}>有5个单词你可能不认识</Text>
-            <TouchableOpacity style={styles.button} onPress={() => this.joinStudy()} activeOpacity={0.8}>
-              <Text style={styles.buttonText}>加入学习</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.wordsList}>
-            {wordsList && wordsList.length > 0 ? wordsList.map(item => (
-              <View style={styles.wordLabel} key={item.id}>
-                <Text>{item.word}</Text>
-              </View>
-            )) : null}
-          </View>
-        </View>
-        <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
-          shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-          <Text style={styles.headText}>
-            If every distraction took 1 minute, that should add up to 2.5 hours of unfruitful time.
-          </Text>
-        </View>
-        <View style={styles.tipsWrapper}>
-          <Image style={styles.avatar} source={require('../assets/images/Camera.png')} />
-          <View style={styles.learnContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
-            shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-            <Text>条件状语从句下的虚拟语气</Text>
-            <TouchableOpacity style={styles.learnButton} onPress={() => this.startToLearn()} activeOpacity={0.8}>
-              <Text style={styles.buttonText}>学习该知识点</Text>
-              <Image style={styles.rightArrow} source={require('../assets/images/Arrow.png')}></Image>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.tipsWrapper}>
-          <Image style={styles.avatar} source={require('../assets/images/Camera.png')} />
-          <View style={styles.learnContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
-            shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-            <Text>条件状语从句下的虚拟语气</Text>
-            <TouchableOpacity style={styles.learnButton} onPress={() => this.startToLearn()} activeOpacity={0.8}>
-              <Text style={styles.buttonText}>学习该知识点</Text>
-              <Image style={styles.rightArrow} source={require('../assets/images/Arrow.png')}></Image>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView> 
-    );
-  }
-}
