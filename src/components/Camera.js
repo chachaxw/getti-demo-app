@@ -7,6 +7,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { StyleSheet, Image, Button, View, TouchableOpacity } from 'react-native';
 import { RNCamera } from 'react-native-camera';
+import ImagePicker from 'react-native-image-picker';
 import { NavigationActions } from 'react-navigation';
 import Spinner from 'react-native-loading-spinner-overlay';
 import apiUrl, { auth } from '../api/config';
@@ -34,7 +35,12 @@ export default class Camera extends Component<Props, States> {
   //拍摄照片
   async takePicture() {
     if (this.camera) {
-      const options = { quality: 0.7, base64: true };
+      const options = {
+        quality: 0.5,
+        base64: true,
+        height: 1600,
+        width: 900,
+      };
       const data = await this.camera.takePictureAsync(options);
       console.log('Data', data);
       if (data && data.uri) {
