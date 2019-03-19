@@ -4,8 +4,8 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
-import Video, { ScrollView, Container } from 'react-native-af-video-player'
+import { StyleSheet, ScrollView, Image, View, Text } from 'react-native';
+import Video, { Container } from 'react-native-af-video-player'
 
 type Props = {
   navigation: any,
