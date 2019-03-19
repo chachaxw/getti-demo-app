@@ -51,14 +51,7 @@ export default {
       {
         id: 1,
         word: '“suggest” 用法',
-        explain: 'instead of 是一个介词，强调对其宾语的否定。通常用于引出一件不被做，或不被使用，或并非真实的事情',
-        example: [
-          { id: 0, content: 'Why not use your bike to get to work instead of your car? 比起开车，为什么不骑你的自行车去上班呢？' },
-          { id: 1, content: 'You can have rice instead of potatoes. 你可以吃米饭而不是土豆' },
-          { id: 2, content: '我们可以说某人 does something instead of doing something else' },
-          { id: 3, content: 'You could always go camping instead of staying in a hotel. 你可以去野营而不是住旅馆。' },
-          { id: 4, content: 'Why don’t you help, instead of standing there and watching. 你为什么站在那里看着，而不帮忙呢？' },
-        ]
+        explain: '',
       }
     ],
     tips: [
@@ -74,7 +67,7 @@ export default {
   },
   103: {
     title: 'result in 和 result from 有什么区别？',
-    video: '../assets/video/video_suggest.mp4',
+    video: '../assets/video/video_result.mp4',
     words: [
       {
         id: 0,
@@ -111,6 +104,71 @@ export default {
       { id: 0, content: 'result 名词词组→ ' },
       { id: 1, content: 'result 和 effect 有什么区别？→ ' },
       { id: 2, content: '表示后果：the RESULT group→ ' },
+    ]
+  },
+  1: {
+    title: '同位语/同位语从句',
+    video: '../assets/video/video.mp4',
+    words: [
+      {
+        id: 0,
+        word: '同位语',
+        explain: '同位语指的就是，一个名词或短语对于另一个名词进行补充说明。',
+        example: [
+          { id: 0, content: 'Mr. White, our new teacher, is very tall. 怀特先生，我们的新老师，长得很高。在这里，“our new teacher ” 就是 “Mr. White” 的同位语，“Mr. White” 是主体词。' },
+          { id: 1, content: '除了名词之外，代词、不定式、动名词和从句也都可以作同位语。' },
+          { id: 2, content: 'To multiply 5 by 3 and to multiply 3 by 5 – both are correct. 三乘五或者五乘三，这两个都是正确的。' },
+          { id: 3, content: 'His ambition to become an engineer deserves our assistance.他想成为工程师的志向值得我们的帮助。' },
+          { id: 4, content: 'Is it good encouraging children to play at fighting? 鼓励孩子们打架玩好吗？' },
+          { id: 5, content: 'The fact that man can land on the moon is no ordinary matter. 人能在月球上着陆这一事实并不寻常。' },
+        ],
+      },
+      {
+        id: 1,
+        word: '“同位语与主体词的关系”',
+        explain: '1.同位语无需与主体词在单复数上保持一致。',
+        example: [
+          { id: 0, content: 'I like Mary and John, students in the class.我很喜欢我们班里的两个学生，玛丽和约翰。 (同位语与主体词都是复数)' },
+          { id: 1, content: 'We trudged along under the stars, our only guide. 我们跟着我们唯一的向导，星星，长途跋涉。(同位语 our only guide 是单数，主体词 the stars 是复数)' },
+        ]
+      },
+    ],
+    tips: [
+      { id: 0, content: '谓语动词单复数与同位语无关。谓语动词必须与作主语的主体词一致。' },
+      { id: 1, content: 'His dinner, eggs and vegetables, is simple. 他的晚餐很简单，就是鸡蛋和蔬菜。(虽然同位语 eggs and vegetables 是复数，但是动词必须与主语 dinner 一致，因此用 is)' },
+      { id: 2, content: 'We each have a car.我们每个人都有一辆车。(each 在这里是 we 的同位语，所以谓语动词  have 与主语 we 保持一致，用复数形式)' },
+    ],
+    relative: [
+      { id: 0, content: '主谓一致 →  ' },
+    ]
+  },
+  104: {
+    title: 'Prevent 怎么用？',
+    video: '../assets/video/video_prevent.mp4',
+    words: [
+      {
+        id: 0,
+        word: '“Prevent” 表“阻止”',
+        explain: '我们可以用 prevent 来表达阻止某事的发生，或者阻止某人做某事。',
+        example: [
+          { id: 0, content: 'The police seem to be powerless to prevent these attacks.警方似乎无力阻止这些袭击。' },
+          { id: 1, content: 'They tried to prevent me (from) leaving. 他们试图阻止我离开。' },
+          { id: 2, content: 'Further treatment will prevent the cancer from developing.进一步的治疗将阻止癌症恶化。' },
+        ]
+      },
+      {
+        id: 1,
+        word: '“Prevent” 动词用法',
+        explain: 'prevent someone/something (from) doing something',
+        example: [
+          { id: 0, content: 'Nothing would prevent his speaking out against injustice. 什么也阻挡不了他为不平之事鸣冤叫屈。' },
+          { id: 1, content: 'Nothing would prevent him (from) speaking out against injustice.什么也阻挡不了他为不平之事鸣冤叫屈。' },
+          { id: 2, content: 'Prevent 属于 the stop group。这一类单词都可以用类似 stop someone/something from doing something 的表达方式。' },
+        ]
+      }
+    ],
+    relative: [
+      { id: 0, content: 'the stop group→ ' },
     ]
   },
 }

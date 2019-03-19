@@ -26,7 +26,7 @@ export default class Result extends Component<Props, States> {
   static navigationOptions = ({ navigation }: any) => {
     const { state } = navigation;
     // Setup the header and tabBarVisible status
-    const header = state.params && (state.params.fullscreen ? undefined : null);
+    const header = state.params && (state.params.fullscreen ? null : undefined);
     const tabBarVisible = state.params ? state.params.fullscreen : true;
 
     return {

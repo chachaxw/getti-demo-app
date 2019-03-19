@@ -72,16 +72,18 @@ export default class Camera extends Component<Props, States> {
       ]);
 
       console.log(res1, res2);
-  
       const navigateAction = NavigationActions.navigate({
         routeName: 'Result',
         params: {
           id: 0,
         },
       });
-  
       this.props.navigation.dispatch(navigateAction);
+
+      this.setState({ loading: null });
     } catch (error) {
+      console.log('Error', error);
+      this.setState({ loading: null });
       alert('上传图片失败');
     }
   }
