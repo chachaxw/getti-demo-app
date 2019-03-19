@@ -36,15 +36,21 @@ export default class Camera extends Component<Props, States> {
     if (this.camera) {
       const options = { quality: 0.7, base64: true };
       const data = await this.camera.takePictureAsync(options);
-
+      console.log('Data', data);
       if (data && data.uri) {
         this.setState({ uri: data.uri });
       }
     }
   }
 
-  async scanPhoto(file: string) {
+  async scanPhoto(uri: string) {
     const form = new FormData();
+    const file = {
+      uri,
+      type: 'multipart/form-data',
+      name: 'temp.jpg'
+    };
+
     const configs = {
       headers: {
         'Authorization': auth,
