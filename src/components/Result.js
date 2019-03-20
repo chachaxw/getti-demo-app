@@ -7,7 +7,15 @@ import React, { Component } from 'react';
 import { StyleSheet, Image, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 
 type Props = {}
-export default class Result extends Component<Props> {
+
+type States = {
+  wordsList: any[],
+}
+export default class Result extends Component<Props, States> {
+
+  state = {
+    wordsList: [],
+  }
 
   static navigationOptions = {
     title: '扫描结果',
@@ -26,37 +34,34 @@ export default class Result extends Component<Props> {
   }
 
   render() {
-    const wordsList = [{
-      id: 0,
-      word: 'strand   v.搁浅',
-    }, {
-      id: 1,
-      word: 'dissent   v.持异议的',
-    }, {
-      id: 2,
-      word: 'acrimony   v.持异议的',
-    }, {
-      id: 3,
-      word: 'fjord   v.峡湾',
-    }, {
-      id: 4,
-      word: 'hictic  a.忙乱的',
-    }];
+    const { navigation } = this.props;
+    const params = navigation.state.params ? navigation.state.params : null;
+
+    let wordsList = [], knowledge = [];
+    if (params) {
+      wordsList = params.words.map(item => ({
+        word: item.word,
+        chinese: item.chinese,
+      }));
+      knowledge = params.knowledge;
+    }
+
+    console.log(wordsList, knowledge);
 
     return (
       <ScrollView style={styles.container}>
         <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
           shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
           <View style={styles.head}>
-            <Text style={styles.headText}>有5个单词你可能不认识</Text>
+            <Text style={styles.headText}>有{wordsList.length}个单词你可能不认识</Text>
             <TouchableOpacity style={styles.button} onPress={() => this.joinStudy()} activeOpacity={0.8}>
               <Text style={styles.buttonText}>加入学习</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.wordsList}>
-            {wordsList && wordsList.length > 0 ? wordsList.map(item => (
-              <View style={styles.wordLabel} key={item.id}>
-                <Text>{item.word}</Text>
+            {wordsList && wordsList.length > 0 ? wordsList.map((item, index) => (
+              <View style={styles.wordLabel} key={index}>
+                <Text>{`${item.word}  ${item.chinese}`}</Text>
               </View>
             )) : null}
           </View>

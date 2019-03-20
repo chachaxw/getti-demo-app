@@ -9,6 +9,7 @@
   "dependencies": {
     "add": "^2.0.6",
     "axios": "^0.18.0",
+    "qs": "^6.6.0",
     "react": "16.8.3",
     "react-native": "0.59.1",
     "react-native-af-video-player": "^0.2.1",

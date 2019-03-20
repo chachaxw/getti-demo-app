@@ -3,14 +3,14 @@
  * @flow
  */
 
-import axios from 'axios';
 import React, { Component } from 'react';
 import { StyleSheet, Image, Button, View, TouchableOpacity } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import ImagePicker from 'react-native-image-picker';
 import { NavigationActions } from 'react-navigation';
 import Spinner from 'react-native-loading-spinner-overlay';
-import apiUrl, { auth } from '../api/config';
+import AxiosInstance from '../api/AxiosInstance';
+import ApiUrl from '../api/config';
 
 type Props = {
   navigation: any,
@@ -59,7 +59,6 @@ export default class Camera extends Component<Props, States> {
 
     const configs = {
       headers: {
-        'Authorization': auth,
         'Content-Type': 'multipart/form-data'
       }
     };
@@ -67,15 +66,20 @@ export default class Camera extends Component<Props, States> {
 
     try {
       const [res1, res2] = await new Promise.all([
-        axios.post(apiUrl.knowledge, form, configs),
-        axios.post(apiUrl.ocr, form, configs),
+        AxiosInstance.post(ApiUrl.knowledge, form, configs),
+        AxiosInstance.post(ApiUrl.ocr, form, configs),
       ]);
 
-      console.log(res1, res2);
+      let knowledge = [];
+      if (res1.data && res1.data.length) {
+          knowledge = res1.data.map(item => item.knowledge);
+      }
+
       const navigateAction = NavigationActions.navigate({
         routeName: 'Result',
         params: {
-          id: 0,
+          words: res2.data.words,
+          knowledge,
         },
       });
       this.props.navigation.dispatch(navigateAction);
@@ -100,6 +104,32 @@ export default class Camera extends Component<Props, States> {
     this.setState({ uri: null });
   }
 
+  openPhotoLibrary() {
+    // Open Image Library:
+    const options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.launchImageLibrary(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        this.setState({
+          uri: response.uri,
+        });
+      }
+    });
+  }
+
   render() {
     const { uri } = this.state;
 
@@ -119,13 +149,14 @@ export default class Camera extends Component<Props, States> {
             type={RNCamera.Constants.Type.back}
             permissionDialogTitle={'Permission to use camera'}
             permissionDialogMessage={'We need your permission to use your camera phone'}>
+            <Button style={styles.select} title="从相册选择" onPress={() => this.openPhotoLibrary()} />
             <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
               <TouchableOpacity onPress={this.takePicture.bind(this)} style={styles.capture}>
                 <Image style={styles.icon} source={require('../assets/images/Camera.png')}></Image>
               </TouchableOpacity>
             </View>
           </RNCamera> : 
-          <View style={styles.preview}>
+          <View style={styles.previewWapper}>
             <Image source={{ uri }} style={styles.preview} />
             <Button style={styles.button} title="使用" onPress={() => this.handleOk()} />
             <Button style={styles.button} color="#999" title="取消" onPress={() => this.handleCancel()} />
@@ -142,9 +173,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: 'black',
   },
-  preview: {
+  previewWapper: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  preview: {
+    flex: 1,
   },
   image: {
     position: 'absolute',
@@ -155,6 +189,11 @@ const styles = StyleSheet.create({
   },
   button: {
     minHeight: 44,
+  },
+  select: {
+    position: 'absolute',
+    left: 10,
+    top: 10,
   },
   camera: {
     flex: 1,
