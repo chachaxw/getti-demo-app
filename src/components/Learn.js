@@ -6,7 +6,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, Image, View, Text } from 'react-native';
 import Video, { Container } from 'react-native-af-video-player';
-import ImagePicker from 'react-native-image-picker';
 
 import learnMock from '../mock/learn';
 
@@ -71,7 +70,9 @@ export default class Result extends Component<Props, States> {
                   <Text style={styles.explain}>{item.explain}</Text>
                   {item.example && item.example.length > 0 ?
                     item.example.map(d => (
-                      <Text style={styles.example} key={d.id}>{d.content}</Text>
+                      <Text style={styles.example} key={d.id}>
+                        {d.content}
+                      </Text>
                     )) : null
                   }
                 </View>
@@ -163,6 +164,7 @@ const styles = StyleSheet.create({
   example: {
     color: '#0168A4',
     fontSize: 14,
+    lineHeight: 22,
     paddingTop: 10,
     paddingBottom: 10,
   },
@@ -180,5 +182,6 @@ const styles = StyleSheet.create({
   tipsContent: {
     fontSize: 14,
     color: '#fff',
+    lineHeight: 22,
   }
 });

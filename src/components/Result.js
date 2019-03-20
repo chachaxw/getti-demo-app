@@ -5,8 +5,11 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Image, ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 
-type Props = {}
+type Props = {
+  navigation: any;
+}
 
 type States = {
   wordsList: any[],
@@ -26,27 +29,36 @@ export default class Result extends Component<Props, States> {
   };
 
   joinStudy() {
-    alert('Join Study');
+    alert('Join to Study');
   }
 
-  startToLearn() {
-    alert('Start to learn');
+
+
+  goToLearn(id: number) {
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Learn',
+      params: {
+        id,
+      },
+    });
+
+    this.props.navigation.dispatch(navigateAction);
   }
 
   render() {
     const { navigation } = this.props;
     const params = navigation.state.params ? navigation.state.params : null;
 
-    let wordsList = [], knowledge = [];
+    let wordsList = [], data = {};
     if (params) {
       wordsList = params.words.map(item => ({
         word: item.word,
         chinese: item.chinese,
       }));
-      knowledge = params.knowledge;
+      data = params.data;
     }
 
-    console.log(wordsList, knowledge);
+    console.log(wordsList, data);
 
     return (
       <ScrollView style={styles.container}>
@@ -66,34 +78,29 @@ export default class Result extends Component<Props, States> {
             )) : null}
           </View>
         </View>
-        <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
+        {/* <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
           shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
           <Text style={styles.headText}>
             If every distraction took 1 minute, that should add up to 2.5 hours of unfruitful time.
           </Text>
-        </View>
-        <View style={styles.tipsWrapper}>
-          <Image style={styles.avatar} source={require('../assets/images/Camera.png')} />
-          <View style={styles.learnContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
-            shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-            <Text>条件状语从句下的虚拟语气</Text>
-            <TouchableOpacity style={styles.learnButton} onPress={() => this.startToLearn()} activeOpacity={0.8}>
-              <Text style={styles.buttonText}>学习该知识点</Text>
-              <Image style={styles.rightArrow} source={require('../assets/images/Arrow.png')}></Image>
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={styles.tipsWrapper}>
-          <Image style={styles.avatar} source={require('../assets/images/Camera.png')} />
-          <View style={styles.learnContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
-            shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-            <Text>条件状语从句下的虚拟语气</Text>
-            <TouchableOpacity style={styles.learnButton} onPress={() => this.startToLearn()} activeOpacity={0.8}>
-              <Text style={styles.buttonText}>学习该知识点</Text>
-              <Image style={styles.rightArrow} source={require('../assets/images/Arrow.png')}></Image>
-            </TouchableOpacity>
-          </View>
-        </View>
+        </View> */}
+        {knowledge && knowledge.length > 0 ? 
+          knowledge.map((item: any, index: number) => {
+            return (
+              <View style={styles.tipsWrapper}>
+                <Image style={styles.avatar} source={require('../assets/images/Camera.png')} />
+                <View style={styles.learnContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
+                  shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
+                  <Text>{item.comment}</Text>
+                  <TouchableOpacity style={styles.learnButton} onPress={() => this.goToLearn(item.id)} activeOpacity={0.8}>
+                    <Text style={styles.buttonText}>学习该知识点</Text>
+                    <Image style={styles.rightArrow} source={require('../assets/images/Arrow.png')}></Image>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            );
+          }): null
+        }
       </ScrollView> 
     );
   }

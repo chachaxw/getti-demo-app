@@ -70,24 +70,18 @@ export default class Camera extends Component<Props, States> {
         AxiosInstance.post(ApiUrl.ocr, form, configs),
       ]);
 
-      let knowledge = [];
-      if (res1.data && res1.data.length) {
-          knowledge = res1.data.map(item => item.knowledge);
-      }
-
       const navigateAction = NavigationActions.navigate({
         routeName: 'Result',
         params: {
           words: res2.data.words,
-          knowledge,
+          data: res1.data,
         },
       });
       this.props.navigation.dispatch(navigateAction);
-
-      this.setState({ loading: null });
+      this.setState({ loading: false });
     } catch (error) {
       console.log('Error', error);
-      this.setState({ loading: null });
+      this.setState({ loading: false });
       alert('上传图片失败');
     }
   }
@@ -113,8 +107,8 @@ export default class Camera extends Component<Props, States> {
       },
     };
 
-    ImagePicker.launchImageLibrary(options, (response) => {
-      console.log('Response = ', response);
+    ImagePicker.launchImageLibrary(options, (response: any) => {
+      // console.log('Response = ', response);
 
       if (response.didCancel) {
         console.log('User cancelled image picker');
