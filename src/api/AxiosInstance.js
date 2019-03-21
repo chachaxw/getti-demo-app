@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 const host = 'https://api-staging.getti.cn'; // staging host
 
-export const auth = 'Token 96bd58d5308201c7b8380edd2270c26547e3c659';
+export const auth = 'Token ec8c067db337fa20f1f43afb2a086d355d0ed477';
 
 // axios config options
 const options: AxiosRequestConfig = {

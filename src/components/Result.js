@@ -42,18 +42,19 @@ export default class Result extends Component<Props, States> {
       if (item.knowledge && item.knowledge.length) {
         item.knowledge.map((d) => {
           const words = d.indices.map(i => text.substr(i.start, i.start + i.len));
-          return {
-            ...d,
-            words,
-          };
+          d.words = words;
+          return d;
         });
-        console.log(sentence);
-        return { ...item, sentence };
+        item.sentence = sentence;
+        return item;
       }
     });
 
-    console.log(data, format);
     return format;
+  }
+
+  highlightText(words, text) {
+    
   }
 
   goToLearn(id: number) {
@@ -79,7 +80,8 @@ export default class Result extends Component<Props, States> {
       }));
       data = this.formatData(params.data);
     }
-    console.log(data);
+
+    console.log('Data', data);
 
     return (
       <ScrollView style={styles.container}>
@@ -128,6 +130,7 @@ export default class Result extends Component<Props, States> {
             );
           }) : null
         }
+        <View style={{paddingBottom: 50}}></View>
       </ScrollView> 
     );
   }
@@ -139,7 +142,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingLeft: 12,
     paddingRight: 12,
-    paddingBottom: 20,
     backgroundColor: '#F9F9F9',
   },
   wordsContainer: {

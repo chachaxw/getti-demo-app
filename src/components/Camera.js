@@ -102,6 +102,7 @@ export default class Camera extends Component<Props, States> {
   openPhotoLibrary() {
     // Open Image Library:
     const options = {
+      quality: 0.7,
       storageOptions: {
         skipBackup: true,
         path: 'images',

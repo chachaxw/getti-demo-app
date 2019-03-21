@@ -79,14 +79,15 @@ export default class Result extends Component<Props, States> {
               );
             }) : null
           }
-          <View style={styles.tipsWrapper}>
-            <Text style={styles.tipsTitle}>注意!</Text>
-            {knowledge.tips && knowledge.tips.length > 0 ? 
-              knowledge.tips.map(item => (
-                <Text style={styles.tipsContent} key={item.id}>{item.content}</Text>
-              )) : null
-            }
-          </View>
+          {knowledge.tips && knowledge.tips.length > 0 ?
+            <View style={styles.tipsWrapper}>
+              <Text style={styles.tipsTitle}>注意!</Text>
+              {knowledge.tips.map(item => (
+                  <Text style={styles.tipsContent} key={item.id}>{item.content}</Text>
+                ))
+              }
+            </View> : null
+          }
           <View style={styles.relative}>
             <Text style={styles.title}>相关条目: </Text>
             {knowledge.relative && knowledge.relative.length > 0 ? 
@@ -158,6 +159,7 @@ const styles = StyleSheet.create({
     color: '#075C7E',
     fontWeight: 'bold',
     fontSize: 15,
+    lineHeight: 24,
     paddingTop: 10,
     paddingBottom: 10,
   },
