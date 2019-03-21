@@ -32,7 +32,29 @@ export default class Result extends Component<Props, States> {
     alert('Join to Study');
   }
 
+  formatData(data: any) {
+    const text = data.text;
+    const knowledge = data.knowledge;
 
+    const format = knowledge.filter((item: any) => {
+      const sentence = text.substr(item.start, item.end);
+
+      if (item.knowledge && item.knowledge.length) {
+        item.knowledge.map((d) => {
+          const words = d.indices.map(i => text.substr(i.start, i.start + i.len));
+          return {
+            ...d,
+            words,
+          };
+        });
+        console.log(sentence);
+        return { ...item, sentence };
+      }
+    });
+
+    console.log(data, format);
+    return format;
+  }
 
   goToLearn(id: number) {
     const navigateAction = NavigationActions.navigate({
@@ -55,10 +77,9 @@ export default class Result extends Component<Props, States> {
         word: item.word,
         chinese: item.chinese,
       }));
-      data = params.data;
+      data = this.formatData(params.data);
     }
-
-    console.log(wordsList, data);
+    console.log(data);
 
     return (
       <ScrollView style={styles.container}>
@@ -78,28 +99,34 @@ export default class Result extends Component<Props, States> {
             )) : null}
           </View>
         </View>
-        {/* <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
-          shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-          <Text style={styles.headText}>
-            If every distraction took 1 minute, that should add up to 2.5 hours of unfruitful time.
-          </Text>
-        </View> */}
-        {knowledge && knowledge.length > 0 ? 
-          knowledge.map((item: any, index: number) => {
+        {data && data.length ? 
+          data.map((item, index) => {
             return (
-              <View style={styles.tipsWrapper}>
-                <Image style={styles.avatar} source={require('../assets/images/Camera.png')} />
-                <View style={styles.learnContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
+              <View key={index}>
+                <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
                   shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-                  <Text>{item.comment}</Text>
-                  <TouchableOpacity style={styles.learnButton} onPress={() => this.goToLearn(item.id)} activeOpacity={0.8}>
-                    <Text style={styles.buttonText}>学习该知识点</Text>
-                    <Image style={styles.rightArrow} source={require('../assets/images/Arrow.png')}></Image>
-                  </TouchableOpacity>
+                  <Text style={styles.headText}>{item.sentence}</Text>
                 </View>
+                {item.knowledge && item.knowledge.length > 0 ? 
+                  item.knowledge.map((d: any, i: number) => {
+                    return (
+                      <View style={styles.tipsWrapper} key={i}>
+                        <Image style={styles.avatar} source={require('../assets/images/Camera.png')} />
+                        <View style={styles.learnContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
+                          shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
+                          <Text>{d.comment}</Text>
+                          <TouchableOpacity style={styles.learnButton} onPress={() => this.goToLearn(d.id)} activeOpacity={0.8}>
+                            <Text style={styles.buttonText}>学习该知识点</Text>
+                            <Image style={styles.rightArrow} source={require('../assets/images/Arrow.png')}></Image>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    );
+                  }): null
+                }
               </View>
             );
-          }): null
+          }) : null
         }
       </ScrollView> 
     );
@@ -112,6 +139,7 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingLeft: 12,
     paddingRight: 12,
+    paddingBottom: 20,
     backgroundColor: '#F9F9F9',
   },
   wordsContainer: {

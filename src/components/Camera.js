@@ -69,6 +69,7 @@ export default class Camera extends Component<Props, States> {
         AxiosInstance.post(ApiUrl.knowledge, form, configs),
         AxiosInstance.post(ApiUrl.ocr, form, configs),
       ]);
+      this.setState({ loading: false, uri: null });
 
       const navigateAction = NavigationActions.navigate({
         routeName: 'Result',
@@ -78,10 +79,10 @@ export default class Camera extends Component<Props, States> {
         },
       });
       this.props.navigation.dispatch(navigateAction);
-      this.setState({ loading: false });
+
     } catch (error) {
       console.log('Error', error);
-      this.setState({ loading: false });
+      this.setState({ loading: false, uri: null });
       alert('上传图片失败');
     }
   }
