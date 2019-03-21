@@ -1,7 +1,7 @@
 export default {
   101: {
     title: 'instead 和 instead of 有什么区别？',
-    video: '../assets/video/video_instead.mp4',
+    video: 'https://static.getti.cn/demo-video/102.mp4',
     words: [
       {
         id: 0,
@@ -35,7 +35,7 @@ export default {
   },
   100: {
     title: '应该怎么用 Suggest 表达建议 ？',
-    video: '../assets/video/video_suggest.mp4',
+    video: 'https://static.getti.cn/demo-video/100.mp4',
     words: [
       {
         id: 0,
@@ -67,7 +67,7 @@ export default {
   },
   103: {
     title: 'result in 和 result from 有什么区别？',
-    video: '../assets/video/video_result.mp4',
+    video: 'https://static.getti.cn/demo-video/103.mp4',
     words: [
       {
         id: 0,
@@ -100,6 +100,7 @@ export default {
         ]
       },
     ],
+    tips: [],
     relative: [
       { id: 0, content: 'result 名词词组→ ' },
       { id: 1, content: 'result 和 effect 有什么区别？→ ' },
@@ -108,7 +109,7 @@ export default {
   },
   1: {
     title: '同位语/同位语从句',
-    video: '../assets/video/video.mp4',
+    video: 'https://static.getti.cn/demo-video/1.mp4',
     words: [
       {
         id: 0,
@@ -144,7 +145,7 @@ export default {
   },
   104: {
     title: 'Prevent 怎么用？',
-    video: '../assets/video/video_prevent.mp4',
+    video: null,
     words: [
       {
         id: 0,
@@ -167,8 +168,33 @@ export default {
         ]
       }
     ],
+    tips: [],
     relative: [
       { id: 0, content: 'the stop group→ ' },
+    ]
+  },
+  0: {
+    title: '虚拟语气的用法',
+    video: null,
+    words: [
+      {
+        id: 0,
+        word: '',
+        explain: '当我们要表达虚构的、与客观事实矛盾的事物时，我们就用虚拟语气。下面是最常见的条件状语从句中虚拟语气的用法。',
+        example: [
+          { id: 0, content: 'If I were you, I would take that chance. 如果我是你，我会抓住这个机会。' },
+          { id: 1, content: 'If you had won the lottery, you would have bought many houses. 如果你中了彩票，你会买很多房子。' },
+          { id: 2, content: 'If we were to become rich, we would not be friends. 如果我们变得富有，我们就不会是朋友。' },
+        ]
+      },
+    ],
+    tips: [
+      {id: 0, content: '用虚拟语气时，需要注意不同的时态有不同的用法。'},
+    ],
+    relative: [
+      { id: 0, content: '状语从句→' },
+      { id: 1, content: '条件状语从句→' },
+      { id: 2, content: '陈述语气 → ' },
     ]
   },
 }

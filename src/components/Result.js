@@ -54,7 +54,7 @@ export default class Result extends Component<Props, States> {
   }
 
   highlightText(words, text) {
-    
+
   }
 
   goToLearn(id: number) {
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   headText: {
     fontSize: 15,
-    color: '#303032',
+    color: '#444',
     fontWeight: 'bold',
     textAlign: 'justify',
   },

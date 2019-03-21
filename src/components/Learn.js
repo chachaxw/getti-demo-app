@@ -58,10 +58,10 @@ export default class Result extends Component<Props, States> {
       <ScrollView style={styles.container}>
         <View style={styles.wrapper}>
           <Text style={styles.title}>{knowledge && knowledge.title}</Text>
-          <Container>
-            <Video url={require('../assets/video/video.mp4')}
+          {knowledge && knowledge.video && <Container>
+            <Video url={knowledge.video}
               onFullScreen={status => this.onFullScreen(status)}/>
-          </Container>
+          </Container>}
           {knowledge && knowledge.words && knowledge.words.length ? 
             knowledge.words.map(item => {
               return (
@@ -79,7 +79,7 @@ export default class Result extends Component<Props, States> {
               );
             }) : null
           }
-          {knowledge.tips && knowledge.tips.length > 0 ?
+          {knowledge && knowledge.tips && knowledge.tips.length > 0 ?
             <View style={styles.tipsWrapper}>
               <Text style={styles.tipsTitle}>注意!</Text>
               {knowledge.tips.map(item => (
@@ -90,7 +90,7 @@ export default class Result extends Component<Props, States> {
           }
           <View style={styles.relative}>
             <Text style={styles.title}>相关条目: </Text>
-            {knowledge.relative && knowledge.relative.length > 0 ? 
+            {knowledge && knowledge.relative && knowledge.relative.length > 0 ? 
               knowledge.relative.map(item => (
                 <View style={styles.label}>
                   <Text key={item.id} style={styles.labelText}>{item.content}</Text>
