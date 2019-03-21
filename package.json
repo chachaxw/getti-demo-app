@@ -13,7 +13,6 @@
     "qs": "^6.6.0",
     "react": "16.8.3",
     "react-native": "0.59.1",
-    "react-native-af-video-player": "^0.2.1",
     "react-native-camera": "^2.0.1",
     "react-native-cardview": "^2.0.2",
     "react-native-gesture-handler": "~1.0.14",

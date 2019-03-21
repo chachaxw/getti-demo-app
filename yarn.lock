@@ -3140,7 +3140,7 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-keymirror@0.1.1, keymirror@^0.1.1:
+keymirror@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/keymirror/-/keymirror-0.1.1.tgz#918889ea13f8d0a42e7c557250eee713adc95c35"
 
@@ -4280,7 +4280,7 @@ prompts@^2.0.1:
     kleur "^3.0.2"
     sisteransi "^1.0.0"
 
-prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   dependencies:
@@ -4370,17 +4370,6 @@ react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
-react-native-af-video-player@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-af-video-player/-/react-native-af-video-player-0.2.1.tgz#35ae17a10b9cba8465fc6a856207de773d2df723"
-  dependencies:
-    react-native-keep-awake "^2.0.6"
-    react-native-linear-gradient "^2.3.0"
-    react-native-orientation "^3.1.0"
-    react-native-slider "https://github.com/abbasfreestyle/react-native-slider.git"
-    react-native-vector-icons "^4.4.2"
-    react-native-video "^2.0.0"
-
 react-native-camera@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-2.0.1.tgz#2263d9c656054a137e5abddaaa0d02d14dc3fb38"
@@ -4405,15 +4394,11 @@ react-native-image-picker@^0.28.0:
   version "0.28.0"
   resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.28.0.tgz#e3f26df170ea932e9c0404624fbced2f59a300e3"
 
-react-native-keep-awake@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/react-native-keep-awake/-/react-native-keep-awake-2.0.6.tgz#d8eaffe0a6377cc197469d9f06c7f317225403db"
-
 react-native-keep-awake@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/react-native-keep-awake/-/react-native-keep-awake-4.0.0.tgz#d89fdc3fb60b3cffa979ef37dc5816196df998a2"
 
-react-native-linear-gradient@^2.3.0, react-native-linear-gradient@^2.5.3:
+react-native-linear-gradient@^2.5.3:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.3.tgz#d90cf19a13fcccfa8bb32025ac40a15ae1b49e99"
 
@@ -4423,7 +4408,7 @@ react-native-loading-spinner-overlay@^1.0.1:
   dependencies:
     prop-types "^15.6.2"
 
-react-native-orientation@^3.1.0, react-native-orientation@^3.1.3:
+react-native-orientation@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/react-native-orientation/-/react-native-orientation-3.1.3.tgz#d45803841fe94b6cce9acbe904fd5ca191a3711e"
 
@@ -4441,12 +4426,6 @@ react-native-shadow@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/react-native-shadow/-/react-native-shadow-1.2.2.tgz#08991cd14b71e32f2fc6363911c139d231949a66"
 
-"react-native-slider@https://github.com/abbasfreestyle/react-native-slider.git":
-  version "0.11.0"
-  resolved "https://github.com/abbasfreestyle/react-native-slider.git#c53b4965c5e4c3ec258479417898dece367e603e"
-  dependencies:
-    prop-types "^15.5.6"
-
 react-native-svg@^9.3.3:
   version "9.3.3"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-9.3.3.tgz#6e94b7d1e2eee1fad23e6af317be68d6db16e5a0"
@@ -4457,14 +4436,6 @@ react-native-tab-view@^1.0.0, react-native-tab-view@^1.2.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-native-vector-icons@^4.4.2:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-4.6.0.tgz#e4014311ffa6de397d914ffc31b7097a874cc8d5"
-  dependencies:
-    lodash "^4.0.0"
-    prop-types "^15.5.10"
-    yargs "^8.0.2"
-
 react-native-vector-icons@^6.4.1:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-6.4.1.tgz#bf69b5321b67c5f510e09d39e3bf4d193f2596c5"
@@ -4472,13 +4443,6 @@ react-native-vector-icons@^6.4.1:
     lodash "^4.0.0"
     prop-types "^15.6.2"
     yargs "^13.2.2"
-
-react-native-video@^2.0.0:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-video/-/react-native-video-2.3.1.tgz#d0df6f984945a67a0cbfc5ad45a5156e2472ccce"
-  dependencies:
-    keymirror "0.1.1"
-    prop-types "^15.5.10"
 
 react-native-video@^4.4.0:
   version "4.4.0"
@@ -5744,24 +5708,6 @@ yargs@^13.2.2:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^13.0.0"
-
-yargs@^8.0.2:
-  version "8.0.2"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-8.0.2.tgz#6299a9055b1cefc969ff7e79c1d918dceb22c360"
-  dependencies:
-    camelcase "^4.1.0"
-    cliui "^3.2.0"
-    decamelize "^1.1.1"
-    get-caller-file "^1.0.1"
-    os-locale "^2.0.0"
-    read-pkg-up "^2.0.0"
-    require-directory "^2.1.1"
-    require-main-filename "^1.0.1"
-    set-blocking "^2.0.0"
-    string-width "^2.0.0"
-    which-module "^2.0.0"
-    y18n "^3.2.1"
-    yargs-parser "^7.0.0"
 
 yargs@^9.0.0:
   version "9.0.1"

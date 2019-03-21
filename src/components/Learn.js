@@ -5,7 +5,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, Image, View, Text } from 'react-native';
-import Video, { Container } from 'react-native-af-video-player';
+import Video from 'react-native-video';
 
 import learnMock from '../mock/learn';
 
@@ -22,30 +22,12 @@ export default class Result extends Component<Props, States> {
     knowledge: {},
   }
 
-  static navigationOptions = ({ navigation }: any) => {
-    const { state } = navigation;
-    // Setup the header and tabBarVisible status
-    const header = state.params && (state.params.fullscreen ? null : undefined);
-    const tabBarVisible = state.params ? state.params.fullscreen : true;
-
-    return {
-      title: '知识讲解',
-      headerStyle: {
-        borderBottomWidth: 0,
-        backgroundColor: '#ffffff',
-      },
-      // For stack navigators, you can hide the header bar like so
-      header,
-      // For the tab navigators, you can hide the tab bar like so
-      tabBarVisible,
-    };
-  }
-
-  onFullScreen(status: any) {
-    // Set the params to pass in fullscreen status to navigationOptions
-    this.props.navigation.setParams({
-      fullscreen: !status
-    });
+  static navigationOptions = {
+    title: '知识讲解',
+    headerStyle: {
+      borderBottomWidth: 0,
+      backgroundColor: '#ffffff',
+    },
   }
 
   render() {
@@ -58,14 +40,13 @@ export default class Result extends Component<Props, States> {
       <ScrollView style={styles.container}>
         <View style={styles.wrapper}>
           <Text style={styles.title}>{knowledge && knowledge.title}</Text>
-          {knowledge && knowledge.video && <Container>
-            <Video url={knowledge.video}
-              onFullScreen={status => this.onFullScreen(status)}/>
-          </Container>}
+          {knowledge && knowledge.video && <Video style={styles.video} controls
+            source={{uri: knowledge.video}} muted={false} paused={true} />
+          }
           {knowledge && knowledge.words && knowledge.words.length ? 
-            knowledge.words.map(item => {
+            knowledge.words.map((item, index) => {
               return (
-                <View style={styles.wordInfo} key={item.id}>
+                <View style={styles.wordInfo} key={index}>
                   <Text style={styles.word}>{item.word}</Text>
                   <Text style={styles.explain}>{item.explain}</Text>
                   {item.example && item.example.length > 0 ?
@@ -92,8 +73,8 @@ export default class Result extends Component<Props, States> {
             <Text style={styles.title}>相关条目: </Text>
             {knowledge && knowledge.relative && knowledge.relative.length > 0 ? 
               knowledge.relative.map(item => (
-                <View style={styles.label}>
-                  <Text key={item.id} style={styles.labelText}>{item.content}</Text>
+                <View style={styles.label} key={item.id}>
+                  <Text style={styles.labelText}>{item.content}</Text>
                 </View>
               )) : null
             }
@@ -114,6 +95,9 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#8CD1EE',
+  },
+  video: {
+    height: 200,
   },
   label: {
     paddingTop: 5,

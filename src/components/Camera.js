@@ -83,7 +83,7 @@ export default class Camera extends Component<Props, States> {
     } catch (error) {
       console.log('Error', error);
       this.setState({ loading: false, uri: null });
-      alert('上传图片失败');
+      // alert('上传图片失败');
     }
   }
 
