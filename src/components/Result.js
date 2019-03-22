@@ -37,11 +37,10 @@ export default class Result extends Component<Props, States> {
     const knowledge = data.knowledge;
 
     const format = knowledge.filter((item: any) => {
-      const sentence = text.substr(item.start, item.end);
-
       if (item.knowledge && item.knowledge.length) {
+        const sentence = text.substring(item.start, item.end);
         item.knowledge.map((d) => {
-          const words = d.indices.map(i => text.substr(i.start, i.start + i.len));
+          const words = d.indices.map(i => text.substring(i.start, i.start + i.len));
           d.words = words;
           return d;
         });
@@ -53,7 +52,7 @@ export default class Result extends Component<Props, States> {
     return format;
   }
 
-  highlightText(words, text) {
+  highlightText(words: string[], text: string) {
 
   }
 
