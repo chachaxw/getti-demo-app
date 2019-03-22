@@ -6,6 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import HighlightText from './HightLight';
 
 type Props = {
   navigation: any;
@@ -38,12 +39,14 @@ export default class Result extends Component<Props, States> {
 
     const format = knowledge.filter((item: any) => {
       if (item.knowledge && item.knowledge.length) {
+        let words = [];
         const sentence = text.substring(item.start, item.end);
         item.knowledge.map((d) => {
-          const words = d.indices.map(i => text.substring(i.start, i.start + i.len));
-          d.words = words;
+          words = d.indices.map(i => text.substring(i.start, i.start + i.len));
           return d;
         });
+
+        item.words = words;
         item.sentence = sentence;
         return item;
       }
@@ -106,7 +109,9 @@ export default class Result extends Component<Props, States> {
               <View key={index}>
                 <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
                   shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-                  <Text style={styles.headText}>{item.sentence}</Text>
+                  {/* <Text style={styles.headText}>{item.sentence}</Text> */}
+                  <HighlightText searchWords={item.words}
+                    textToHighlight={item.sentence} highlightStyle={{backgroundColor: 'yellow'}}/>
                 </View>
                 {item.knowledge && item.knowledge.length > 0 ? 
                   item.knowledge.map((d: any, i: number) => {
