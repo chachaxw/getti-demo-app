@@ -42,7 +42,7 @@ export default class Camera extends Component<Props, States> {
         width: 900,
       };
       const data = await this.camera.takePictureAsync(options);
-      console.log('Data', data);
+
       if (data && data.uri) {
         this.setState({ uri: data.uri });
       }

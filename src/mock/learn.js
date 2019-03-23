@@ -1,7 +1,7 @@
 export default {
   101: {
     title: 'instead 和 instead of 有什么区别？',
-    video: 'https://static.getti.cn/demo-video/102.mp4',
+    video: 'https://static.getti.cn/demo-video/101.mp4',
     words: [
       {
         id: 0,

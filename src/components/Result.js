@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { NavigationActions } from 'react-navigation';
-import HighlightText from './HightLight';
+import HighlightText from './HighLight';
 
 type Props = {
   navigation: any;
@@ -109,9 +109,11 @@ export default class Result extends Component<Props, States> {
               <View key={index}>
                 <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
                   shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-                  {/* <Text style={styles.headText}>{item.sentence}</Text> */}
-                  <HighlightText searchWords={item.words}
-                    textToHighlight={item.sentence} highlightStyle={{backgroundColor: 'yellow'}}/>
+                  <HighlightText
+                    searchWords={item.words}
+                    textToHighlight={item.sentence}
+                    highlightStyle={{backgroundColor: 'yellow'}}
+                  />
                 </View>
                 {item.knowledge && item.knowledge.length > 0 ? 
                   item.knowledge.map((d: any, i: number) => {
