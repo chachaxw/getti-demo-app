@@ -6,6 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+import LinearGradient from 'react-native-linear-gradient';
 import HighlightText from './HighLight';
 
 type Props = {
@@ -13,12 +14,16 @@ type Props = {
 }
 
 type States = {
+  selected: any,
+  selectedData: any,
   wordsList: any[],
 }
 export default class Result extends Component<Props, States> {
 
   state = {
     wordsList: [],
+    selected: null,
+    selectedData: null,
   }
 
   static navigationOptions = {
@@ -55,8 +60,18 @@ export default class Result extends Component<Props, States> {
     return format;
   }
 
-  highlightText(words: string[], text: string) {
-
+  selectKnowledge(selectedData, knowledge: any) {
+    if (!this.state.selected) {
+      this.setState({
+        selected: knowledge,
+        selectedData,
+      });
+    } else {
+      this.setState({
+        selected: null,
+        selectedData: null,
+      });
+    }
   }
 
   goToLearn(id: number) {
@@ -72,6 +87,7 @@ export default class Result extends Component<Props, States> {
 
   render() {
     const { navigation } = this.props;
+    const { selectedData, selected } = this.state;
     const params = navigation.state.params ? navigation.state.params : null;
 
     let wordsList = [], data = {};
@@ -83,7 +99,7 @@ export default class Result extends Component<Props, States> {
       data = this.formatData(params.data);
     }
 
-    console.log('Data', data);
+    console.log('Data', data, selectedData);
 
     return (
       <ScrollView style={styles.container}>
@@ -91,8 +107,10 @@ export default class Result extends Component<Props, States> {
           shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
           <View style={styles.head}>
             <Text style={styles.headText}>有{wordsList.length}个单词你可能不认识</Text>
-            <TouchableOpacity style={styles.button} onPress={() => this.joinStudy()} activeOpacity={0.8}>
-              <Text style={styles.buttonText}>加入学习</Text>
+            <TouchableOpacity onPress={() => this.joinStudy()} activeOpacity={0.8}>
+              <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#495AFF', '#0ACFFE']} style={styles.button}>
+                <Text style={styles.buttonText}>加入学习</Text>
+              </LinearGradient>
             </TouchableOpacity>
           </View>
           <View style={styles.wordsList}>
@@ -109,26 +127,38 @@ export default class Result extends Component<Props, States> {
               <View key={index}>
                 <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
                   shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-                  <HighlightText
-                    searchWords={item.words}
-                    textToHighlight={item.sentence}
-                    highlightStyle={{backgroundColor: 'yellow'}}
-                  />
+                  {selectedData && selectedData.start === item.start ? 
+                    <HighlightText
+                      searchWords={item.words}
+                      textToHighlight={item.sentence}
+                      highlightStyle={{backgroundColor: '#C3EFFF'}}
+                    /> : <Text>{item.sentence}</Text>
+                  }
                 </View>
                 {item.knowledge && item.knowledge.length > 0 ? 
                   item.knowledge.map((d: any, i: number) => {
                     return (
-                      <View style={styles.tipsWrapper} key={i}>
-                        <Image style={styles.avatar} source={require('../assets/images/Camera.png')} />
-                        <View style={styles.learnContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
-                          shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-                          <Text>{d.comment}</Text>
-                          <TouchableOpacity style={styles.learnButton} onPress={() => this.goToLearn(d.id)} activeOpacity={0.8}>
-                            <Text style={styles.buttonText}>学习该知识点</Text>
-                            <Image style={styles.rightArrow} source={require('../assets/images/Arrow.png')}></Image>
+                        <View key={i} style={styles.tipsWrapper}>
+                          <Image style={styles.avatar} source={require('../assets/images/Camera.png')} />
+                          <TouchableOpacity onPress={() => this.selectKnowledge(item, d)}
+                            activeOpacity={1} style={styles.learnContainer}>
+                            <View shadowColor="#a6a6a6" shadowOpacity={0.2} style={Object.assign({}, styles.learn, {
+                                backgroundColor: selected && selected.comment === d.comment ? '#C3EFFF' : null
+                              })}
+                              shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
+                              <Text>{d.comment}</Text>
+                              <View style={{width: '100%', flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
+                                <TouchableOpacity onPress={() => this.goToLearn(d.id)} activeOpacity={0.8}>
+                                  <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+                                    colors={['#495AFF', '#0ACFFE']} style={styles.learnButton}>
+                                    <Text style={styles.buttonText}>学习该知识点</Text>
+                                    <Image style={styles.rightArrow} source={require('../assets/images/Arrow.png')}></Image>
+                                  </LinearGradient>
+                                </TouchableOpacity>
+                              </View>
+                            </View>
                           </TouchableOpacity>
                         </View>
-                      </View>
                     );
                   }): null
                 }
@@ -215,15 +245,21 @@ const styles = StyleSheet.create({
   },
   learnContainer: {
     flex: 1,
-    padding: 12,
     marginLeft: 10,
+    backgroundColor: '#fff',
     borderTopRightRadius: 12,
     borderBottomLeftRadius: 12,
     borderBottomEndRadius: 12,
-    backgroundColor: '#ffffff',
+  },
+  learn: {
+    flex: 1,
+    padding: 12,
+    borderTopRightRadius: 12,
+    borderBottomLeftRadius: 12,
+    borderBottomEndRadius: 12,
   },
   learnButton: {
-    maxWidth: 140,
+    minWidth: 90,
     display: 'flex',
     borderRadius: 14,
     paddingTop: 5,

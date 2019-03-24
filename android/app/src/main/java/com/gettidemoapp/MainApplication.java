@@ -3,6 +3,7 @@ package com.gettidemoapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.kishanjvaghela.cardview.RNCardViewPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.github.yamill.orientation.OrientationPackage;
@@ -32,6 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCardViewPackage(),
             new ImagePickerPackage(),
             new LinearGradientPackage(),
             new OrientationPackage(),
