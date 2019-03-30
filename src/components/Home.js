@@ -4,21 +4,25 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, Image, ImageBackground, View, Text, TouchableOpacity } from 'react-native';
-import { NavigationActions } from 'react-navigation';
+import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView, NavigationActions } from 'react-navigation';
 
 type Props = {
   navigation: any,
 }
 
+type States = {
+  activeTab: string,
+}
+
 export default class Home extends Component<Props, States> {
 
+  state = {
+    activeTab: 'coach',
+  }
+
   static navigationOptions = {
-    title: 'Getti',
-    headerStyle: {
-      borderBottomWidth: 0,
-      backgroundColor: '#ffffff',
-    },
+    header: null,
   };
 
   takePicture() {
@@ -37,66 +41,95 @@ export default class Home extends Component<Props, States> {
   }
 
   render() {
+    const { activeTab } = this.state;
 
     return (
-      <View style={styles.container}>
-        <TouchableOpacity style={styles.cameraTouchable} onPress={() => this.takePicture()} activeOpacity={1}>
-          <Image style={styles.camera} source={require('../assets/images/Camera.png')}></Image>
-        </TouchableOpacity>
-        <View style={styles.button} shadowColor="#a6a6a6" shadowOpacity={0.5}
-          shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-          <TouchableOpacity onPress={() => this.goToLearn()} activeOpacity={1}>
-            <ImageBackground style={styles.buttonBG} source={require('../assets/images/Button.png')}>
-              <Text style={styles.buttonText}>我的学习</Text>
-              <Image style={styles.rightArrow} source={require('../assets/images/RightArrow.png')}></Image>
-            </ImageBackground>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.tabBar}>
+          <View style={Object.assign({}, styles.tabItem, {
+              borderBottomColor: activeTab === 'coach' ? '#333' : '#fff'
+            })
+          }>
+            <Image style={styles.tabItemIcon} source={require('../assets/images/user.png')}></Image>
+            <Text style={styles.tabItemText}>Coach</Text>
+          </View>
+          <View style={Object.assign({}, styles.tabItem, {
+              borderBottomColor: activeTab === 'discovery' ? '#333' : '#fff'
+            })
+          }>
+            <Image style={styles.tabItemIcon} source={require('../assets/images/discovery.png')}></Image>
+            <Text style={styles.tabItemText}>发现</Text>
+          </View>
+        </View>
+        <View style={styles.wrapper}>
+          <TouchableOpacity onPress={() => this.takePicture()} activeOpacity={1}>
+            <View style={styles.button} shadowColor="#a6a6a6" shadowOpacity={0.5}
+              shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
+              <Image style={styles.buttonIcon} source={require('../assets/images/camera_icon.png')}></Image>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.takePicture()} activeOpacity={1}>
+            <View style={styles.button} shadowColor="#a6a6a6" shadowOpacity={0.5}
+              shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
+              <Image style={styles.buttonIcon} source={require('../assets/images/text_icon.png')}></Image>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.takePicture()} activeOpacity={1}>
+            <View style={styles.button} shadowColor="#a6a6a6" shadowOpacity={0.5}
+              shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
+              <Image style={styles.buttonIcon} source={require('../assets/images/book_icon.png')}></Image>
+            </View>
           </TouchableOpacity>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
-}
+} 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  tabBar: {
+    height: 44,
+    paddingLeft: 40,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    backgroundColor: '#fff',
+  },
+  tabItem: {
+    paddingBottom: 4,
+    borderBottomWidth: 4,
+    marginRight: 50,
+    alignItems: 'center',
+  },
+  tabItemText: {
+    fontSize: 15,
+    color: '#333',
+  },
+  tabItemIcon: {
+    width: 19,
+    height: 19,
+    marginBottom: 2,
+  },
+  wrapper: {
+    flex: 1,
     padding: 12,
-    alignItems: "center",
-    backgroundColor: '#F9F9F9',
-  },
-  cameraTouchable: {
-    marginTop: 100,
-    backgroundColor: '#FBFBFA',
-  },
-  camera: {
-    width: 128,
-    height: 128,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: '#F5F5F5',
   },
   button: {
-    width: '100%',
-    position: 'absolute',
-    bottom: 40,
-  },
-  buttonBG: {
-    width: 350,
-    height: 60,
-    color: '#ffffff',
-    fontSize: 18,
-    paddingLeft: 28,
-    paddingRight: 28,
-    borderRadius: 12,
-    display: 'flex',
-    flexDirection: 'row',
+    width: 88,
+    height: 88,
+    borderRadius: 44,
     alignItems: "center",
-    justifyContent: 'space-between',
-    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
-  rightArrow: {
-    width: 34,
-    height: 17,
+  buttonIcon: {
+    width: 44,
+    height: 40,
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-  }
 });
