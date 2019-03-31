@@ -4,10 +4,12 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, ScrollView, Image, View, Text } from 'react-native';
 import Video from 'react-native-video';
+import { StyleSheet, ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView, NavigationActions } from 'react-navigation';
 
 import learnMock from '../mock/learn';
+import { isIPhoneX, isIPhoneXR } from '../utils/utils';
 
 type Props = {
   navigation: any,
@@ -24,21 +26,30 @@ export default class Result extends Component<Props, States> {
 
   static navigationOptions = {
     title: '知识讲解',
+    headerBackTitle: '返回',
     headerStyle: {
       borderBottomWidth: 0,
       backgroundColor: '#ffffff',
     },
   }
 
+  startToLearn() {
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'Practice',
+      params: {},
+    });
+
+    this.props.navigation.dispatch(navigateAction);
+  }
+
   render() {
     const { navigation } = this.props;
     const id = navigation.state.params && navigation.state.params.id ? navigation.state.params.id : 0;
     const knowledge = learnMock[id];
-    console.log(knowledge);
 
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.wrapper}>
+      <SafeAreaView style={styles.container}>
+        <ScrollView style={styles.wrapper}>
           <Text style={styles.title}>{knowledge && knowledge.title}</Text>
           {knowledge && knowledge.video && <Video style={styles.video} controls
             source={{uri: knowledge.video}} muted={false} paused={true} />
@@ -47,7 +58,10 @@ export default class Result extends Component<Props, States> {
             knowledge.words.map((item, index) => {
               return (
                 <View style={styles.wordInfo} key={index}>
-                  <Text style={styles.word}>{item.word}</Text>
+                  {item.word ? <View style={styles.highLightWord}>
+                    <Text style={styles.highLight}>{item.word}</Text>
+                    <Text style={styles.word}>{item.word}</Text>
+                  </View> : null}
                   <Text style={styles.explain}>{item.explain}</Text>
                   {item.example && item.example.length > 0 ?
                     item.example.map(d => (
@@ -71,16 +85,26 @@ export default class Result extends Component<Props, States> {
           }
           <View style={styles.relative}>
             <Text style={styles.title}>相关条目: </Text>
-            {knowledge && knowledge.relative && knowledge.relative.length > 0 ? 
-              knowledge.relative.map(item => (
-                <View style={styles.label} key={item.id}>
-                  <Text style={styles.labelText}>{item.content}</Text>
-                </View>
-              )) : null
-            }
+            <View style={styles.labelWrapper}>
+              {knowledge && knowledge.relative && knowledge.relative.length > 0 ? 
+                knowledge.relative.map(item => (
+                  <View style={styles.label} key={item.id}>
+                    <Text style={styles.labelText}>{item.content}</Text>
+                  </View>
+                )) : null
+              }
+            </View>
           </View>
+        </ScrollView>
+        <View style={Object.assign({}, styles.bottomWrapper, {
+          paddingBottom: (isIPhoneX() || isIPhoneXR()) ? 0 : 12,
+        })}>
+          <TouchableOpacity style={styles.bottomButton}
+            onPress={() => this.startToLearn()} activeOpacity={0.8}>
+            <Text style={styles.bottomButtonText}>开始学习</Text>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
+      </SafeAreaView>
     )
   }
 }
@@ -88,8 +112,14 @@ export default class Result extends Component<Props, States> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 12,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#FFF',
+  },
+  wrapper: {
+    flex: 1,
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingBottom: 20,
+    backgroundColor: '#fff',
   },
   relative: {
     paddingBottom: 16,
@@ -98,6 +128,11 @@ const styles = StyleSheet.create({
   },
   video: {
     height: 200,
+  },
+  labelWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   label: {
     paddingTop: 5,
@@ -113,13 +148,6 @@ const styles = StyleSheet.create({
   labelText: {
     fontSize: 14,
   },
-  wrapper: {
-    flex: 1,
-    paddingLeft: 12,
-    paddingRight: 12,
-    paddingBottom: 50,
-    backgroundColor: '#fff',
-  },
   title: {
     fontSize: 19,
     color: '#05384D',
@@ -132,7 +160,23 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#8CD1EE',
   },
+  highLightWord: {
+    position: 'relative',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  highLight: {
+    position: 'absolute',
+    height: 20,
+    top: 12,
+    left: 30,
+    borderRightWidth: 12,
+    borderRightColor: '#F8E71C',
+    color: 'rgba(0,0,0,0)',
+    backgroundColor: '#F8E71C',
+  },
   word: {
+    position: 'relative',
     color: '#05384D',
     fontWeight: 'bold',
     fontSize: 17,
@@ -150,9 +194,9 @@ const styles = StyleSheet.create({
   example: {
     color: '#0168A4',
     fontSize: 14,
-    lineHeight: 22,
-    paddingTop: 10,
-    paddingBottom: 10,
+    lineHeight: 18,
+    paddingTop: 5,
+    paddingBottom: 5,
   },
   tipsWrapper: {
     padding: 12,
@@ -169,5 +213,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#fff',
     lineHeight: 22,
+  },
+  bottomWrapper: {
+    marginTop: 20,
+    paddingLeft: 28,
+    paddingRight: 28,
+  },
+  bottomButton: {
+    height: 44,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFC249',
+  },
+  bottomButtonText: {
+    fontSize: 20,
+    color: '#333',
   }
 });
