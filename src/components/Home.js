@@ -29,6 +29,15 @@ export default class Home extends Component<Props, States> {
     this.props.navigation.navigate('Camera');
   }
 
+  goToBookNote() {
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'BookNote',
+      params: {},
+    });
+
+    this.props.navigation.dispatch(navigateAction);
+  }
+
   goToLearn() {
     const navigateAction = NavigationActions.navigate({
       routeName: 'Learn',
