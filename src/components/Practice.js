@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { isIPhoneX, isIPhoneXR } from '../utils/utils';
+import mockPractice from '../mock/practice';
 
 type Props = {
   navigation: any,
@@ -16,30 +17,16 @@ type States = {
   statusList: any[],
   practice: any,
   selectedList: any[],
+  selectedOption: any,
 }
 
 export default class Practice extends Component<Props, States> {
 
   state = {
     statusList: [{correct: true}, {}, {}],
-    practice: {
-      type: 'translate',
-      title: '翻译此句子',
-      sentence: '我们每个人都有一本字典来帮助我们。',
-      options: [
-        { id: 0, word: 'we', selected: false },
-        { id: 1, word: 'dictionary', selected: false },
-        { id: 2, word: 'dictionaries', selected: false },
-        { id: 3, word: 'help', selected: false },
-        { id: 4, word: 'to', selected: false },
-        { id: 5, word: 'each', selected: false },
-        { id: 6, word: 'have', selected: false },
-        { id: 7, word: 'a', selected: false },
-        { id: 8, word: 'us', selected: false },
-        { id: 9, word: 'every', selected: false },
-      ],
-    },
+    practice: mockPractice[1],
     selectedList: [],
+    selectedOption: null,
   };
 
   static navigationOptions = {
@@ -92,6 +79,10 @@ export default class Practice extends Component<Props, States> {
         options: list,
       }
     });
+  }
+
+  selectOption(option: any) {
+    this.setState({ selectedOption: option });
   }
 
   submit() {
@@ -154,7 +145,44 @@ export default class Practice extends Component<Props, States> {
   }
 
   renderSelect(props) {
+    const { selectedOption } = this.state;
 
+    return (
+      <View style={styles.content}>
+        <Text style={styles.title}>{props.title}</Text>
+        <Text style={styles.sentence}>{props.sentence}</Text>
+        <View style={styles.optionsList}>
+          {props.options && props.options.length ?
+            props.options.map((item) => {
+              if (selectedOption && item.id === selectedOption.id) {
+                return (
+                  <TouchableOpacity
+                    key={item.id}
+                    activeOpacity={1}
+                    style={Object.assign({}, styles.optionWraper, {
+                      borderWidth: 0,
+                      backgroundColor: '#C2E3FF',
+                    })}
+                    onPress={() => this.selectOption(item)}>
+                    <Text style={styles.optionText}>{item.word}</Text>
+                  </TouchableOpacity>
+                );
+              }
+
+              return (
+                <TouchableOpacity
+                  key={item.id}
+                  activeOpacity={1}
+                  style={styles.optionWraper}
+                  onPress={() => this.selectOption(item)}>
+                  <Text style={styles.optionText}>{item.word}</Text>
+                </TouchableOpacity>
+              );
+            }) : null
+          }
+        </View>
+      </View>
+    );
   }
 
   renderFinished() {
@@ -172,8 +200,9 @@ export default class Practice extends Component<Props, States> {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity  style={styles.closeButton} onPress={() => this.goBack()}>
-            <Image style={styles.closeButton} source={require('../assets/images/close.png')}></Image>
+          <TouchableOpacity style={styles.closeButton} onPress={() => this.goBack()}>
+            <Image style={styles.closeButton} source={require('../assets/images/back_icon.png')}></Image>
+            <Text style={{marginLeft: 5, color: '#999'}}>返回学习</Text>
           </TouchableOpacity>
           <View style={styles.statusWrapper}>
             {statusList.map((item: any, i: number) => {
@@ -192,7 +221,7 @@ export default class Practice extends Component<Props, States> {
             })}
           </View>
         </View>
-        {this.renderFinished()}
+        {this.renderSelect(practice)}
         <View style={Object.assign({}, styles.answerStatus, {
           backgroundColor: '#D4F5FF'
         })}>
@@ -204,7 +233,7 @@ export default class Practice extends Component<Props, States> {
               alignItems: (isIPhoneX() || isIPhoneXR()) ? 'flex-start' : 'center',
             })}
             activeOpacity={0.8} onPress={() => this.submit()}>
-            <Text style={styles.buttonText}>保存笔记</Text>
+            <Text style={styles.buttonText}>提交</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -224,8 +253,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   closeButton: {
-    width: 22,
-    height: 22,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   statusWrapper: {
     flex: 1,
@@ -322,5 +351,23 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#666666',
     marginTop: 30,
+  },
+  optionsList: {
+    marginTop: 42,
+    alignItems: 'center',
+  },
+  optionWraper: {
+    width: 200,
+    height: 46,
+    borderRadius: 10,
+    marginBottom: 20,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: '#999999',
+  },
+  optionText: {
+    fontSize: 16,
+    color: '#333',
   }
 });
