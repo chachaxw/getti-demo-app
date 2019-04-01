@@ -95,11 +95,79 @@ export default class Practice extends Component<Props, States> {
   }
 
   submit() {
-    console.log('Submit');
+    alert('Submit');
+  }
+
+  renderTranslate(props: any) {
+    const { selectedList } = this.state;
+
+    return (
+      <View style={styles.content}>
+        <Text style={styles.title}>{props.title}</Text>
+        <Text style={styles.sentence}>{props.sentence}</Text>
+        <View style={styles.answerWrap}>
+          <View style={styles.line}>
+            {selectedList.length ? selectedList.map((item: any) => {
+              return (
+                <TouchableOpacity
+                  key={item.id}
+                  activeOpacity={0.7}
+                  style={styles.wordLabel}
+                  onPress={() => this.selectWord(item)}
+                >
+                  <Text style={styles.word}>{item.word}</Text>
+                </TouchableOpacity>
+              )
+            }) : null}
+          </View>
+        </View>
+        <View style={styles.options}>
+          {props.options && props.options.length > 0 ?
+            props.options.map((item: any) => {
+              if (item.selected) {
+                return (
+                  <TouchableOpacity
+                    key={item.id}
+                    activeOpacity={1}
+                    style={Object.assign({}, styles.wordLabel, {backgroundColor: '#E9E9E9', borderWidth: 0})}
+                  >
+                    <Text style={Object.assign({}, styles.word, {color: 'rgba(0,0,0,0)'})}>{item.word}</Text>
+                  </TouchableOpacity>
+                );
+              }
+
+              return (
+                <TouchableOpacity
+                  key={item.id}
+                  activeOpacity={0.7}
+                  style={styles.wordLabel}
+                  onPress={() => this.selectWord(item)}
+                >
+                  <Text style={styles.word}>{item.word}</Text>
+                </TouchableOpacity>
+              );
+            }) : null
+          }
+        </View>
+      </View>
+    );
+  }
+
+  renderSelect(props) {
+
+  }
+
+  renderFinished() {
+    return (
+      <View style={Object.assign({}, styles.content, {alignItems: 'center'})}>
+        <Image source={require('../assets/images/finished.png')} style={{width: 322, height: 316}} />
+        <Text style={styles.finishedText}>你已经掌握高考中的同位语</Text>
+      </View>
+    );
   }
 
   render() {
-    const { statusList, practice, selectedList } = this.state;
+    const { statusList, practice } = this.state;
 
     return (
       <View style={styles.container}>
@@ -124,53 +192,11 @@ export default class Practice extends Component<Props, States> {
             })}
           </View>
         </View>
-        <View style={styles.content}>
-          <Text style={styles.title}>{practice.title}</Text>
-          <Text style={styles.sentence}>{practice.sentence}</Text>
-          <View style={styles.answerWrap}>
-            <View style={styles.line}>
-              {selectedList.length ? selectedList.map((item: any) => {
-                return (
-                  <TouchableOpacity
-                    key={item.id}
-                    activeOpacity={0.7}
-                    style={styles.wordLabel}
-                    onPress={() => this.selectWord(item)}
-                  >
-                    <Text style={styles.word}>{item.word}</Text>
-                  </TouchableOpacity>
-                )
-              }) : null}
-            </View>
-          </View>
-          <View style={styles.options}>
-            {practice && practice.options && practice.options.length > 0 ?
-              practice.options.map((item: any) => {
-                if (item.selected) {
-                  return (
-                    <TouchableOpacity
-                      key={item.id}
-                      activeOpacity={1}
-                      style={Object.assign({}, styles.wordLabel, {backgroundColor: '#E9E9E9', borderWidth: 0})}
-                    >
-                      <Text style={Object.assign({}, styles.word, {color: 'rgba(0,0,0,0)'})}>{item.word}</Text>
-                    </TouchableOpacity>
-                  );
-                }
-
-                return (
-                  <TouchableOpacity
-                    key={item.id}
-                    activeOpacity={0.7}
-                    style={styles.wordLabel}
-                    onPress={() => this.selectWord(item)}
-                  >
-                    <Text style={styles.word}>{item.word}</Text>
-                  </TouchableOpacity>
-                );
-              }) : null
-            }
-          </View>
+        {this.renderFinished()}
+        <View style={Object.assign({}, styles.answerStatus, {
+          backgroundColor: '#D4F5FF'
+        })}>
+          <Text style={styles.rightText}>正确</Text>
         </View>
         <View>
           <TouchableOpacity style={Object.assign({}, styles.button, {
@@ -261,6 +287,27 @@ const styles = StyleSheet.create({
     borderColor: '#D8D8D8',
     backgroundColor: '#FFF',
   },
+  answerStatus: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 25,
+    paddingRight: 25,
+  },
+  rightText: {
+    color: '#1289B7',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  wrongText: {
+    color: '#EA3334',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  rightAnswer: {
+    color: '#EA2C2B',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
   button: {
     padding: 12,
     flexDirection: 'row',
@@ -271,4 +318,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#fff',
   },
+  finishedText: {
+    fontSize: 18,
+    color: '#666666',
+    marginTop: 30,
+  }
 });
