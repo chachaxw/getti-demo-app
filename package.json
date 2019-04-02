@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "mock": "json-server mock/db.js"
   },
   "dependencies": {
     "add": "^2.0.6",
     "axios": "^0.18.0",
+    "faker": "^4.1.0",
     "highlight-words-core": "^1.2.2",
     "qs": "^6.7.0",
     "react": "^16.8.5",
