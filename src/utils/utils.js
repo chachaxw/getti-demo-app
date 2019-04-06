@@ -29,3 +29,17 @@ export function isIphoneXR() {
     (SCREEN_HEIGHT === XR_WIDTH && SCREEN_WIDTH === XR_HEIGHT))
   )
 }
+
+// 判断答案是否和标准答案一致
+export function isRightAnswer(arr1, arr2) {
+
+  if (arr1.length > arr2.length) {
+    return false;
+  }
+
+  const result = arr2.map((item, i) => {
+    return arr1[i] && (arr1[i].id === item.id);
+  });
+
+  return !(result.filter(d => !d).length > 0);
+}

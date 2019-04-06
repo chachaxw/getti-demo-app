@@ -60,7 +60,7 @@ export default class Result extends Component<Props, States> {
     return format;
   }
 
-  selectKnowledge(selectedData, knowledge: any) {
+  selectKnowledge(selectedData: any, knowledge: any) {
     if (!this.state.selected) {
       this.setState({
         selected: knowledge,
