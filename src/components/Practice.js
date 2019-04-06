@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
 import { NavigationActions } from 'react-navigation';
-import { isIPhoneX, isIPhoneXR } from '../utils/utils';
+import { isIPhoneX, isIPhoneXR, isRightAnswer } from '../utils/utils';
 import mockPractice from '../mock/practice';
 
 type Props = {
@@ -14,18 +14,24 @@ type Props = {
 }
 
 type States = {
+  active: any,
+  activeIndex: number,
   statusList: any[],
-  practice: any,
+  practice: any[],
   selectedList: any[],
   selectedOption: any,
+  selectedGrammar: any[],
 }
 
 export default class Practice extends Component<Props, States> {
 
   state = {
-    statusList: [{correct: true}, {}, {}],
-    practice: mockPractice[1],
+    activeIndex: 0,
+    active: mockPractice[0],
+    statusList: [{}, {}, {}],
+    practice: mockPractice,
     selectedList: [],
+    selectedGrammar: [],
     selectedOption: null,
   };
 
@@ -38,21 +44,34 @@ export default class Practice extends Component<Props, States> {
   };
 
   componentDidMount() {
-    const { options } = this.state.practice;
-    this.setState({
-      selectedList: options.filter(d => d.selected)
-    });
+    const { active } = this.state;
+
+    if (active.type === 'translate' && active.options) {
+      this.setState({
+        selectedList: active.options.filter(d => d.selected)
+      });
+    }
   }
 
   goBack() {
+    this.setState({
+      activeIndex: 0,
+      active: mockPractice[0],
+      statusList: [{}, {}, {}],
+      practice: mockPractice,
+      selectedList: [],
+      selectedGrammar: [],
+      selectedOption: null,
+    });
+
     const backAction = NavigationActions.back();
     this.props.navigation.dispatch(backAction);
   }
 
   selectWord(word: any) {
-    const { practice, selectedList } = this.state;
+    const { active, selectedList } = this.state;
     const selected = this.state.selectedList;
-    const list = practice.options.map(item => {
+    const list = active.options.map(item => {
       if (item.id === word.id) {
         return {
           ...item,
@@ -74,8 +93,8 @@ export default class Practice extends Component<Props, States> {
     }
 
     this.setState({
-      practice: {
-        ...practice,
+      active: {
+        ...active,
         options: list,
       }
     });
@@ -85,8 +104,60 @@ export default class Practice extends Component<Props, States> {
     this.setState({ selectedOption: option });
   }
 
+  selectGrammar(word: any) {
+    const { active } = this.state;
+
+    const list = active.sentence.map(item => {
+      if (item.id === word.id) {
+        return {
+          ...item,
+          selected: !item.selected,
+        };
+      }
+      return item;
+    });
+
+    this.setState({
+      active: {
+        ...active,
+        sentence: list,
+      },
+      selectedGrammar: list.filter(d => !d.selected),
+    });
+  }
+
+  nextPractice() {
+    let { activeIndex, active, practice } = this.state;
+    activeIndex++;
+
+    if (activeIndex < practice.length) {
+      active = practice[activeIndex];
+    } else {
+      active = null;
+    }
+
+    this.setState({ active, activeIndex });
+  }
+
   submit() {
-    alert('Submit');
+    let isRight;
+    let statusList = this.state.statusList;
+    let active = this.state.active;
+    const { selectedList, selectedOption, selectedGrammar } = this.state;
+
+    const answer = active.answer;
+
+    if (active.type === 'translate') {
+      isRight = statusList[0].status = selectedList.length && isRightAnswer(selectedList, answer) ? 'right' : 'wrong';
+    } else if (active.type === 'grammar') {
+      isRight = statusList[1].status = selectedGrammar.length && isRightAnswer(selectedGrammar, answer) ? 'right' : 'wrong';
+    } else if (active.type === 'select') {
+      isRight = statusList[2].status = selectedOption && (answer.id === selectedOption.id) ? 'right' : 'wrong';
+    }
+
+    active.status = isRight;
+
+    this.setState({ statusList, active });
   }
 
   renderTranslate(props: any) {
@@ -144,7 +215,33 @@ export default class Practice extends Component<Props, States> {
     );
   }
 
-  renderSelect(props) {
+  renderGrammar(props: any) {
+    return (
+      <View style={styles.content}>
+        <Text style={styles.title}>{props.title}</Text>
+        <View style={styles.grammarWrapper}>
+          {props.sentence && props.sentence.length > 0 ?
+            props.sentence.map((item: any) => {
+              return (
+                <TouchableOpacity key={item.id} activeOpacity={0.8} onPress={() => this.selectGrammar(item)}>
+                  <Text style={Object.assign({}, styles.grammarWord, {
+                    backgroundColor: item.selected ? '#C2E3FF' : '#FFF'
+                  })}>
+                    {item.word}
+                  </Text>
+                  <View style={Object.assign({}, styles.grammarWord, {
+                    borderBottomColor: item.selected ? '#FFF' : '#D8D8D8'
+                  })} />
+                </TouchableOpacity>
+              );
+            }) : null
+          }
+        </View>
+      </View>
+    );
+  }
+
+  renderSelect(props: any) {
     const { selectedOption } = this.state;
 
     return (
@@ -194,8 +291,36 @@ export default class Practice extends Component<Props, States> {
     );
   }
 
+  renderAnswerStatus(props: any) {
+    alert(props.status);
+    if (!(props && props.status)) {
+      return;
+    }
+
+    if (props.status === 'right') {
+      return (
+        <View style={Object.assign({}, styles.answerStatus, {
+          backgroundColor: '#D4F5FF'
+        })}>
+          <Text style={styles.rightText}>正确</Text>
+        </View>
+      );
+    } else if (props.status === 'wrong') {
+      return (
+        <View style={Object.assign({}, styles.answerStatus, {
+          backgroundColor: '#FFC1C1'
+        })}>
+          <Text style={styles.wrongText}>错误</Text>
+          <Text>{props.answerStr}</Text>
+        </View>
+      );
+    }
+
+    return null;
+  }
+
   render() {
-    const { statusList, practice } = this.state;
+    const { statusList, active, activeIndex, practice } = this.state;
 
     return (
       <View style={styles.container}>
@@ -206,7 +331,7 @@ export default class Practice extends Component<Props, States> {
           </TouchableOpacity>
           <View style={styles.statusWrapper}>
             {statusList.map((item: any, i: number) => {
-              if (item && item.correct) {
+              if (item && item.status === 'right') {
                 return (
                   <View style={Object.assign({}, styles.status, {backgroundColor: '#24D17E'})} key={i}>
                     <Image style={{width: 15, height: 11}} source={require('../assets/images/correct.png')}/>
@@ -221,20 +346,49 @@ export default class Practice extends Component<Props, States> {
             })}
           </View>
         </View>
-        {this.renderSelect(practice)}
-        <View style={Object.assign({}, styles.answerStatus, {
-          backgroundColor: '#D4F5FF'
-        })}>
-          <Text style={styles.rightText}>正确</Text>
-        </View>
+        {practice && practice.length ? 
+          practice.map((item) => {
+            if (!active || item.type !== active.type) {
+              return null;
+            }
+
+            if (item.type === 'translate') {
+              return this.renderTranslate(active);
+            } else if (item.type === 'select') {
+              return this.renderSelect(active);
+            } else if (item.type === 'grammar') {
+              return this.renderGrammar(active);
+            }
+          }) : null
+        }
+        {!active && this.renderFinished()}
         <View>
-          <TouchableOpacity style={Object.assign({}, styles.button, {
+          {active ? this.renderAnswerStatus(active) : null}
+          {active && (statusList[activeIndex].status ? 
+            <TouchableOpacity style={Object.assign({}, styles.button, {
+                height: (isIPhoneX() || isIPhoneXR()) ? 80 : 50,
+                alignItems: (isIPhoneX() || isIPhoneXR()) ? 'flex-start' : 'center',
+                backgroundColor: statusList[activeIndex].status === 'right' ? '#8FD2EC' : '#FE4C4A'
+              })}
+              activeOpacity={0.8} onPress={() => this.nextPractice()}>
+                <Text style={styles.buttonText}>继续</Text>
+            </TouchableOpacity> :
+            <TouchableOpacity style={Object.assign({}, styles.button, {
               height: (isIPhoneX() || isIPhoneXR()) ? 80 : 50,
               alignItems: (isIPhoneX() || isIPhoneXR()) ? 'flex-start' : 'center',
             })}
             activeOpacity={0.8} onPress={() => this.submit()}>
-            <Text style={styles.buttonText}>提交</Text>
-          </TouchableOpacity>
+              <Text style={styles.buttonText}>提交</Text>
+            </TouchableOpacity>)
+          }
+          {!active && <TouchableOpacity style={Object.assign({}, styles.button, {
+              height: (isIPhoneX() || isIPhoneXR()) ? 80 : 50,
+              alignItems: (isIPhoneX() || isIPhoneXR()) ? 'flex-start' : 'center',
+            })}
+            activeOpacity={0.8} onPress={() => this.goBack()}>
+              <Text style={styles.buttonText}>练习更高等级的同位语</Text>
+            </TouchableOpacity>
+          }
         </View>
       </View>
     );
@@ -331,6 +485,7 @@ const styles = StyleSheet.create({
     color: '#EA3334',
     fontSize: 20,
     fontWeight: 'bold',
+    marginBottom: 5,
   },
   rightAnswer: {
     color: '#EA2C2B',
@@ -369,5 +524,19 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 16,
     color: '#333',
+  },
+  grammarWrapper: {
+    marginTop: 50,
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  grammarWord: {
+    fontSize: 16,
+    color: '#333333',
+    marginRight: 5,
+    paddingBottom: 2,
+    borderBottomColor: '#D8D8D8',
+    borderBottomWidth: 1,
   }
 });
