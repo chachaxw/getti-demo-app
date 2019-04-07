@@ -6,7 +6,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Image, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import { NavigationActions } from 'react-navigation';
-import LinearGradient from 'react-native-linear-gradient';
 import HighlightText from './HighLight';
 
 type Props = {
@@ -30,7 +29,7 @@ export default class Result extends Component<Props, States> {
     title: '扫描结果',
     headerStyle: {
       borderBottomWidth: 0,
-      backgroundColor: '#ffffff',
+      backgroundColor: '#E1EEFE',
     },
   };
 
@@ -44,14 +43,11 @@ export default class Result extends Component<Props, States> {
 
     const format = knowledge.filter((item: any) => {
       if (item.knowledge && item.knowledge.length) {
-        let words = [];
         const sentence = text.substring(item.start, item.end);
         item.knowledge.map((d) => {
-          words = d.indices.map(i => text.substring(i.start, i.start + i.len));
+          d.words = d.indices.map(i => text.substring(i.start, i.start + i.len));
           return d;
         });
-
-        item.words = words;
         item.sentence = sentence;
         return item;
       }
@@ -60,13 +56,20 @@ export default class Result extends Component<Props, States> {
     return format;
   }
 
-  selectKnowledge(selectedData: any, knowledge: any) {
-    if (!this.state.selected) {
-      this.setState({
-        selected: knowledge,
-        selectedData,
-      });
-    } else {
+  selectKnowledge(evt: any, selectedData: any, knowledge: any) {
+    const { selected } = this.state;
+
+    this.setState({
+      selected: null,
+      selectedData: null,
+    });
+
+    this.setState({
+      selected: knowledge,
+      selectedData,
+    });
+
+    if (selected && knowledge && knowledge.id === selected.id) {
       this.setState({
         selected: null,
         selectedData: null,
@@ -99,18 +102,13 @@ export default class Result extends Component<Props, States> {
       data = this.formatData(params.data);
     }
 
-    console.log('Data', data, selectedData);
-
     return (
       <ScrollView style={styles.container}>
-        <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
-          shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
+        <View style={styles.wordsContainer}>
           <View style={styles.head}>
             <Text style={styles.headText}>有{wordsList.length}个单词你可能不认识</Text>
-            <TouchableOpacity onPress={() => this.joinStudy()} activeOpacity={0.8}>
-              <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#495AFF', '#0ACFFE']} style={styles.button}>
-                <Text style={styles.buttonText}>加入学习</Text>
-              </LinearGradient>
+            <TouchableOpacity onPress={() => this.joinStudy()} activeOpacity={0.8} style={styles.button}>
+              <Text style={styles.buttonText}>加入学习</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.wordsList}>
@@ -124,36 +122,35 @@ export default class Result extends Component<Props, States> {
         {data && data.length ? 
           data.map((item, index) => {
             return (
-              <View key={index}>
+              <View key={index} style={{backgroundColor: index % 2 === 0 ? '#C2DCFD' : '#E1EEFE'}}>
                 <View style={styles.wordsContainer} shadowColor="#a6a6a6" shadowOpacity={0.2}
                   shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
                   {selectedData && selectedData.start === item.start ? 
                     <HighlightText
-                      searchWords={item.words}
+                      searchWords={selected.words}
                       textToHighlight={item.sentence}
-                      highlightStyle={{backgroundColor: '#C3EFFF'}}
-                    /> : <Text>{item.sentence}</Text>
+                      highlightStyle={{color: '#4A4A4A', backgroundColor: '#E9EAA0'}}
+                    /> : <Text style={{color: '#4A4A4A'}}>{item.sentence}</Text>
                   }
                 </View>
-                {item.knowledge && item.knowledge.length > 0 ? 
+                {item.knowledge && item.knowledge.length > 0 ?
                   item.knowledge.map((d: any, i: number) => {
                     return (
                         <View key={i} style={styles.tipsWrapper}>
-                          <Image style={styles.avatar} source={require('../assets/images/Camera.png')} />
-                          <TouchableOpacity onPress={() => this.selectKnowledge(item, d)}
+                          <Image style={styles.avatar} source={require('../assets/images/logo.png')} />
+                          <TouchableOpacity onPress={(evt: any) => this.selectKnowledge(evt, item, d)}
                             activeOpacity={1} style={styles.learnContainer}>
                             <View shadowColor="#a6a6a6" shadowOpacity={0.2} style={Object.assign({}, styles.learn, {
-                                backgroundColor: selected && selected.comment === d.comment ? '#C3EFFF' : null
+                                backgroundColor: selectedData && selectedData.start === item.start &&
+                                  selected && selected.comment === d.comment ? '#F4E62A' : null
                               })}
                               shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-                              <Text>{d.comment}</Text>
+                              <Text>{d.comment} {d.chinese && d.chinese}</Text>
                               <View style={{width: '100%', flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-                                <TouchableOpacity onPress={() => this.goToLearn(d.id)} activeOpacity={0.8}>
-                                  <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}}
-                                    colors={['#495AFF', '#0ACFFE']} style={styles.learnButton}>
-                                    <Text style={styles.buttonText}>学习该知识点</Text>
-                                    <Image style={styles.rightArrow} source={require('../assets/images/Arrow.png')}></Image>
-                                  </LinearGradient>
+                                <TouchableOpacity onPress={() => this.goToLearn(d.id)}
+                                  activeOpacity={0.8} style={styles.learnButton}>
+                                  <Text style={styles.buttonText}>学习该知识点</Text>
+                                    <Image style={styles.rightArrow} source={require('../assets/images/arrow_blue.png')}></Image>
                                 </TouchableOpacity>
                               </View>
                             </View>
@@ -175,18 +172,12 @@ export default class Result extends Component<Props, States> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 16,
-    paddingLeft: 12,
-    paddingRight: 12,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#E1EEFE',
   },
   wordsContainer: {
     width: '100%',
     padding: 12,
-    borderRadius: 12,
-    marginBottom: 16,
     justifyContent: 'flex-start',
-    backgroundColor: '#ffffff',
   },
   wordsList: {
     display: 'flex',
@@ -202,7 +193,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     color: '#767070',
     borderRadius: 4,
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#fff',
   },
   head: {
     display: 'flex',
@@ -224,11 +215,11 @@ const styles = StyleSheet.create({
     paddingRight: 14,
     paddingTop: 5,
     paddingBottom: 5,
-    backgroundColor: '#1DAFFE',
+    backgroundColor: '#FFF',
   },
   buttonText: {
     fontSize: 13,
-    color: '#fff',
+    color: '#4A90E2',
     flex: 1,
   },
   avatar: {
@@ -239,6 +230,7 @@ const styles = StyleSheet.create({
   },
   tipsWrapper: {
     width: '100%',
+    padding: 12,
     marginBottom: 16,
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -247,16 +239,16 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 10,
     backgroundColor: '#fff',
-    borderTopRightRadius: 12,
-    borderBottomLeftRadius: 12,
-    borderBottomEndRadius: 12,
+    borderTopRightRadius: 16,
+    borderBottomLeftRadius: 16,
+    borderBottomEndRadius: 16,
   },
   learn: {
     flex: 1,
     padding: 12,
-    borderTopRightRadius: 12,
-    borderBottomLeftRadius: 12,
-    borderBottomEndRadius: 12,
+    borderTopRightRadius: 16,
+    borderBottomLeftRadius: 16,
+    borderBottomEndRadius: 16,
   },
   learnButton: {
     minWidth: 90,
@@ -270,7 +262,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#1DAFFE',
+    // backgroundColor: '#1DAFFE',
   },
   rightArrow: {
     width: 17,
