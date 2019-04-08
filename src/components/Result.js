@@ -102,6 +102,8 @@ export default class Result extends Component<Props, States> {
       data = this.formatData(params.data);
     }
 
+    console.log(data);
+
     return (
       <ScrollView style={styles.container}>
         <View style={styles.wordsContainer}>
@@ -145,7 +147,10 @@ export default class Result extends Component<Props, States> {
                                   selected && selected.comment === d.comment ? '#F4E62A' : null
                               })}
                               shadowOffset={{width: 0, height: 2}} shadowRadius={50}>
-                              <Text>{d.comment} {d.chinese && d.chinese}</Text>
+                              {d.type === 'sense' ? 
+                                <Text>{d.sense.split('_')[0]}: {d.chinese ? d.chinese : d.comment}</Text> :
+                                <Text>{d.chinese ? d.chinese : d.comment}</Text>
+                              }
                               <View style={{width: '100%', flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                                 <TouchableOpacity onPress={() => this.goToLearn(d.id)}
                                   activeOpacity={0.8} style={styles.learnButton}>
